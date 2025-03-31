@@ -1,6 +1,11 @@
 # Use Node 20 as the base image
 FROM node:20-slim
 
+# Install git and other necessary dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
 # Set working directory
 WORKDIR /app
 
