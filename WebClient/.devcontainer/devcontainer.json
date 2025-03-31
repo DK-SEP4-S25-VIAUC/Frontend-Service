@@ -16,8 +16,7 @@
     },
     "forwardPorts": [5173],
     "mounts": [
-        "source=${localWorkspaceFolder},target=/app,type=bind,consistency=cached",
-        "source=${localWorkspaceFolder}/node_modules,target=/app/node_modules,type=volume"
+        "source=${localWorkspaceFolder},target=/app,type=bind,consistency=cached"
     ],
     "remoteUser": "node",
     "postCreateCommand": "npm install"
