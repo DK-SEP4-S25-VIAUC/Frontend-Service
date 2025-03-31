@@ -2,11 +2,7 @@ FROM node:20
 
 WORKDIR /usr/src/app
 
-COPY WebClient/package*.json ./
-
-RUN npm install
-
-COPY . .
+RUN apt-get update && apt-get install -y git
 
 EXPOSE 3000
 
