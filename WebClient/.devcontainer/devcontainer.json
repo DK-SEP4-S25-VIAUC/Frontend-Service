@@ -1,21 +1,18 @@
 {
-    "name": "WebStorm Dev Container",
-    "build": {
-        "dockerfile": "Dockerfile",
-        "context": "../WebClient"
+    "name": "Node.js Development Container",
+    "dockerFile": "Dockerfile",
+    "appPort": 3000,
+    "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash",
+        "editor.formatOnSave": true
     },
-    "customizations": {
-        "vscode": {
-            "extensions": [
-                "esbenp.prettier-vscode",
-                "dbaeumer.vscode-eslint"
-            ]
-        }
-    },
-    "mounts": [
-        "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+    "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode"
     ],
-    "workspaceFolder": "usr/src/app",
     "postCreateCommand": "npm install",
-    "remoteUser": "node"
+    "forwardPorts": [
+        3000
+    ],
+    "workspaceFolder": "/workspace"
 }
