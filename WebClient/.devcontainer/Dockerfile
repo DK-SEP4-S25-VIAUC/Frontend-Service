@@ -1,15 +1,17 @@
-
 # Use Node 20 as the base image
 FROM node:20-slim
 
 # Set working directory
 WORKDIR /app
 
-# Copy the entire project
-COPY . .
+# Copy package files first
+COPY package*.json ./
 
 # Install dependencies
 RUN npm install
+
+# Then copy the rest of the project
+COPY . .
 
 # Expose the port that Vite runs on
 EXPOSE 5173
