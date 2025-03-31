@@ -1,19 +1,24 @@
 {
-    "name": "WebStorm Dev Container",
+    "name": "React Vite Tailwind Dev",
     "build": {
-        "dockerfile": "Dockerfile"
+        "dockerfile": "Dockerfile",
+        "context": ".."
     },
+    "workspaceFolder": "/app",
     "customizations": {
         "vscode": {
             "extensions": [
+                "dbaeumer.vscode-eslint",
                 "esbenp.prettier-vscode",
-                "dbaeumer.vscode-eslint"
+                "bradlc.vscode-tailwindcss"
             ]
         }
     },
+    "forwardPorts": [5173],
     "mounts": [
-        "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+        "source=${localWorkspaceFolder},target=/app,type=bind,consistency=cached",
+        "source=${localWorkspaceFolder}/node_modules,target=/app/node_modules,type=volume"
     ],
-    "postCreateCommand": "npm install",
-    "remoteUser": "node"
+    "remoteUser": "node",
+    "postCreateCommand": "npm install"
 }
