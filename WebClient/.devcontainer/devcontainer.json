@@ -1,18 +1,16 @@
 {
-    "name": "Node.js Development Container",
-    "dockerFile": "Dockerfile",
-    "appPort": 3000,
-    "settings": {
-        "terminal.integrated.shell.linux": "/bin/bash",
-        "editor.formatOnSave": true
+    "name": "WebClient Dev Container",
+    "dockerComposeFile": "../docker-compose.yml",
+    "service": "webclient",
+    "workspaceFolder": "/workspaces/Frontend-Service/WebClient",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "esbenp.prettier-vscode",
+                "dbaeumer.vscode-eslint"
+            ]
+        }
     },
-    "extensions": [
-        "dbaeumer.vscode-eslint",
-        "esbenp.prettier-vscode"
-    ],
     "postCreateCommand": "npm install",
-    "forwardPorts": [
-        3000
-    ],
-    "workspaceFolder": "/workspace"
+    "remoteUser": "node"
 }

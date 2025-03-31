@@ -1,0 +1,10 @@
+version: '3'
+services:
+  webclient:
+    build:
+      context: .
+      dockerfile: WebClient/Dockerfile
+    volumes:
+      - .:/workspaces/Frontend-Service
+    ports:
+      - "3000:3000"
