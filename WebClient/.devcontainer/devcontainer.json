@@ -1,7 +1,8 @@
 {
     "name": "WebStorm Dev Container",
     "build": {
-        "dockerfile": "Dockerfile"
+        "dockerfile": "Dockerfile",
+        "context": "../WebClient"
     },
     "customizations": {
         "vscode": {
@@ -14,6 +15,7 @@
     "mounts": [
         "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
     ],
+    "workspaceFolder": "usr/src/app",
     "postCreateCommand": "npm install",
     "remoteUser": "node"
 }
