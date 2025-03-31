@@ -11,6 +11,6 @@
             ]
         }
     },
-    "postCreateCommand": "npm install",
+    "postCreateCommand": "cd /workspaces/Frontend-Service/WebClient && npm install",
     "remoteUser": "node"
 }
