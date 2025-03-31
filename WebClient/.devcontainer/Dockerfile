@@ -15,6 +15,8 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
+RUN git config --global --add safe.directory /app
+
 # Then copy the rest of the project
 COPY . .
 
