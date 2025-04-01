@@ -1,0 +1,22 @@
+# Developer-specific files
+.gitconfig.user
+.env
+
+# IDE specific files
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
+
+# Dependencies
+node_modules/
+vendor/
+
+# Build artifacts
+dist/
+build/
+*.log
+
+# Docker
+.docker-volumes/
