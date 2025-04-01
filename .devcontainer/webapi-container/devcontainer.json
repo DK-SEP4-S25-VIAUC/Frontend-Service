@@ -1,0 +1,9 @@
+{
+    "name": "WebApi Container",
+    "dockerComposeFile": [
+        "../../docker-compose.yml"
+    ],
+    "service": "webapi",
+    "shutdownAction": "none",
+    "workspaceFolder": "/workspace/WebApi"
+}

@@ -1,0 +1,10 @@
+{
+    "name": "WebClient Container",
+    "dockerComposeFile": [
+        "../../docker-compose.yml"
+    ],
+    "service": "webclient",
+    "shutdownAction": "none",
+    "workspaceFolder": "/workspace/WebClient",
+    "postCreateCommand": "npm install"
+}
