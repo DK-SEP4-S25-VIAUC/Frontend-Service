@@ -1,0 +1,9 @@
+{
+    "name": "WebApi Container",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": ".."
+    },
+    "shutdownAction": "none",
+    "workspaceFolder": "/workspace"
+}
