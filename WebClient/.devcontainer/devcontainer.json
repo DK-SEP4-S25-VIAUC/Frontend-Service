@@ -4,20 +4,9 @@
         "dockerfile": "Dockerfile",
         "context": ".."
     },
-    "customizations": {
-        "vscode": {
-            "settings": {
-                "terminal.integrated.shell.linux": "/bin/bash"
-            }
-        },
-        "extensions": [
-            "dbaeumer.vscode-eslint",
-            "esbenp.prettier-vscode"
-        ]
-    },
+    "workspaceFolder": "/app",
     "forwardPorts": [
         3000
     ],
-    "postCreateCommand": "npm install",
-    "remoteUser": "node"
+    "postCreateCommand": "npm install"
 }
