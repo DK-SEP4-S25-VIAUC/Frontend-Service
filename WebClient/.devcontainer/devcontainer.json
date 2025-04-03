@@ -4,6 +4,7 @@
         "dockerfile": "Dockerfile",
         "context": ".."
     },
+    "workspaceFolder": "/workspace",
     "forwardPorts": [
         3000
     ],
