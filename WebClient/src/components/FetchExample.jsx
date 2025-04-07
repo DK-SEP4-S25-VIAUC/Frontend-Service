@@ -1,10 +1,10 @@
 ﻿import React, { useState, useEffect } from 'react';
 
-// A reusable fetch hook
 function useFetch(url) {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [responseType, setResponseType] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -16,8 +16,17 @@ function useFetch(url) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
 
-                const result = await response.json();
-                setData(result);
+                const contentType = response.headers.get("content-type");
+                setResponseType(contentType);
+
+                if (contentType && contentType.includes("application/json")) {
+                    const result = await response.json();
+                    setData(result);
+                } else {
+                    // if response is not json
+                    const textResult = await response.text();
+                    setData({ text: textResult });
+                }
             } catch (error) {
                 setError(error.message);
                 console.error(`Error fetching from ${url}:`, error);
@@ -27,13 +36,13 @@ function useFetch(url) {
         };
 
         fetchData();
-    }, [url]); // Re-run when the URL changes
+    }, [url]);
 
-    return { data, loading, error };
+    return { data, loading, error, responseType };
 }
 
 function ApiData({ title, url }) {
-    const { data, loading, error } = useFetch(url);
+    const { data, loading, error, responseType } = useFetch(url);
 
     return (
         <div className="api-data-container">
@@ -49,7 +58,15 @@ function ApiData({ title, url }) {
 
             {data && (
                 <div className="data">
-                    <pre>{JSON.stringify(data, null, 2)}</pre>
+                    {responseType && <p><small>Response type: {responseType}</small></p>}
+                    {data.text ? (
+                        <div className="text-response">
+                            <p>Response (as text):</p>
+                            <pre>{data.text}</pre>
+                        </div>
+                    ) : (
+                        <pre>{JSON.stringify(data, null, 2)}</pre>
+                    )}
                 </div>
             )}
         </div>
@@ -62,10 +79,10 @@ function MultipleFetchExample() {
             <h2>API Data from Multiple Endpoints</h2>
             <br/>
 
-            <ApiData
-                title="MAL API Data"
-                url="https://sep4api.azure-api.net/mal/Prototype/testEndpoint"
-            />
+                <ApiData
+                    title="MAL API Data"
+                    url="https://sep4api.azure-api.net/mal/Prototype/testEndpoint"
+                />
             <br/>
 
             <ApiData
