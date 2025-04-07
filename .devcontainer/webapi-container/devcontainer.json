@@ -5,5 +5,15 @@
     ],
     "service": "webapi",
     "shutdownAction": "none",
-    "workspaceFolder": "/workspace/WebApi"
+    "workspaceFolder": "/workspace/WebApi",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "ms-python.vscode-pylance",
+                "esbenp.prettier-vscode",
+                "dbaeumer.vscode-eslint"
+            ]
+        }
+    }
 }
