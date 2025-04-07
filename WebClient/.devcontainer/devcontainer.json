@@ -2,7 +2,7 @@
     "name": "React Dev Container",
     "build": {
         "dockerfile": "Dockerfile",
-        "context": "..",
+        "context": "../WebClient", // Adjust if package.json is here
         "args": {
             "GIT_USER_NAME": "${localEnv:GIT_USER_NAME}",
             "GIT_USER_EMAIL": "${localEnv:GIT_USER_EMAIL}"
@@ -18,6 +18,9 @@
         "GIT_USER_EMAIL": "${localEnv:GIT_USER_EMAIL}"
     },
     "remoteUser": "root",
+    "mounts": [
+        "source=${localEnv:USERPROFILE}/.ssh,target=/root/.ssh,type=bind,consistency=cached"
+    ],
     "customizations": {
         "jetbrains": {
             "backend": "WebStorm",
