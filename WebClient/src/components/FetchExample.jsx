@@ -61,7 +61,6 @@ function ApiData({ title, url }) {
                     {responseType && <p><small>Response type: {responseType}</small></p>}
                     {data.text ? (
                         <div className="text-response">
-                            <p>Response (as text):</p>
                             <pre>{data.text}</pre>
                         </div>
                     ) : (
