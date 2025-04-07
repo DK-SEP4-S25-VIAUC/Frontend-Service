@@ -6,7 +6,9 @@
     "service": "webclient",
     "shutdownAction": "none",
     "workspaceFolder": "/workspace/WebClient",
-    "postCreateCommand": "npm install",
+    "forwardPorts": [
+        3000
+    ],
     "customizations": {
         "vscode": {
             "extensions": [
@@ -15,10 +17,21 @@
                 "dsznajder.es7-react-js-snippets",
                 "ms-azuretools.vscode-docker",
                 "hermitter.oh-lucy-vscode",
-                "pkief.material-icon-theme"
+                "pkief.material-icon-theme",
+                "formulahendry.auto-rename-tag",
+                "christian-kohler.npm-intellisense",
+                "jpoissonnier.vscode-styled-components",
+                "msjsdiag.debugger-for-chrome"
             ],
             "settings": {
-                "workbench.iconTheme": "material-icon-theme"
+                "workbench.iconTheme": "material-icon-theme",
+                "editor.formatOnSave": true,
+                "eslint.validate": [
+                    "javascript",
+                    "javascriptreact",
+                    "typescript",
+                    "typescriptreact"
+                ]
             }
         }
     }

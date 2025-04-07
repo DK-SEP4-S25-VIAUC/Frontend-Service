@@ -1,7 +1,7 @@
 version: '3'
 services:
   webclient:
-    image: mcr.microsoft.com/devcontainers/javascript-node:1-20-bookworm
+    image: node:22
     volumes:
       - .:/workspace:cached
     command: sleep infinity
