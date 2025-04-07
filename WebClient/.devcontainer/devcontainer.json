@@ -2,7 +2,7 @@
     "name": "React Dev Container",
     "build": {
         "dockerfile": "Dockerfile",
-        "context": "../WebClient", // Adjust if package.json is here
+        "context": "..",
         "args": {
             "GIT_USER_NAME": "${localEnv:GIT_USER_NAME}",
             "GIT_USER_EMAIL": "${localEnv:GIT_USER_EMAIL}"
