@@ -12,7 +12,7 @@
     "forwardPorts": [
         3000
     ],
-    "postCreateCommand": "/workspace/scripts/init-git.sh && npm install",
+    "postCreateCommand": "./init-git.sh && npm install",
     "remoteEnv": {
         "GIT_USER_NAME": "${localEnv:GIT_USER_NAME}",
         "GIT_USER_EMAIL": "${localEnv:GIT_USER_EMAIL}"
