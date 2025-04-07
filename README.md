@@ -45,11 +45,25 @@ dir $env:USERPROFILE\.ssh
 ssh-keygen -t rsa -b 4096 -C "your.email@example.com"
 ```
 3. Press Enter to accept the default file location this is very important as this is included from git, and then enter a passphrase if you want to add an extra layer of security.
+<a id="enabling-ssh-agent-step"></a>
 4. Add the SSH key to the ssh-agent by running the following command:
 ```bash
 Start-Service ssh-agent
 ssh-add $env:USERPROFILE\.ssh\id_rsa
 ```
+* A common error is that the ssh-agent is not enabled, run the following command to check if ssh-agent is enabled
+```bash
+Get-Service ssh-agent
+
+Status   Name               DisplayName
+------   ----               -----------
+Stopped  ssh-agent          OpenSSH Authentication Agent
+```
+* If the output is the same as the one above enable the ssh-agent by running the following comnmand:
+```bash
+Set-Service -Name ssh-agent -StartupType Manual
+```
+* And follow from point [4](#enabling-ssh-agent-step)
 5. Copy the SSH key to your clipboard by running the following command:
 ```bash
 Get-Content $env:USERPROFILE\.ssh\id_rsa.pub | clip
