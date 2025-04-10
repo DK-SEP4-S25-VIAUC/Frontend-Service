@@ -86,7 +86,7 @@ function MultipleFetchExample() {
 
             <ApiData
                 title="IoT API Data"
-                    url="https://sep4api.azure-api.net/mal/Prototype/secondEndpoint"
+                    url="https://sep4api.azure-api.net/iot/testendpoint"
             />
         </div>
     );
