@@ -10,6 +10,13 @@ export default defineConfig({
     tailwindcss(),
   ],
   server:{
-    port: 3000
+    port: 3000,
+    proxy: {
+      '/api': {
+        target: 'https://sep4api.azure-api.net',
+        changeOrigin: true,
+        secure: false, // Optional: Ignore SSL issues during development
+      },
+    },
   }
 })
