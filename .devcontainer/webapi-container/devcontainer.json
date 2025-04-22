@@ -5,5 +5,18 @@
     ],
     "service": "webapi",
     "shutdownAction": "none",
-    "workspaceFolder": "/workspace/WebApi"
+    "workspaceFolder": "/workspace/WebApi",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "esbenp.prettier-vscode",
+                "dbaeumer.vscode-eslint",
+                "ms-python.python",
+                "ms-python.vscode-pylance"
+            ],
+            "settings": {
+                "workbench.iconTheme": "material-icon-theme"
+            }
+        }
+    }
 }
