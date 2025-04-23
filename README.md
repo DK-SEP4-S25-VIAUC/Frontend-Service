@@ -21,7 +21,7 @@ The container is mounted to the host machine, so you can use the host machine to
 #### Jetbrains IDE: Remote Development - Dev Containers [macOS / Windows / Linux]
 1. Install the [Docker](https://www.jetbrains.com/help/idea/docker.html) plugin in your Jetbrains IDE.
 2. Select Remote Development > Dev Containers > New Dev Container.
-3. Select the From VCS Project option. Insert the URL of the repository. (Make sure to use the SSH URL)
+3. Select the From VCS Project option. Insert the URL of the repository. (Make sure to use the HTTP url)
 4. Now as this is a monorepo, which is why you have to specify the path to the service you want to work on. "[SERVICE]/.devcontainer/devcontainer.json". 
 5. You have to also specify the branch, yet you can change this from inside the container, the only thing you have to acknowledge is that the devcontainer.json and Dockerfile may be outdated if you are choosing a deprecated branch.
 6. Click OK.
