@@ -3,6 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import FetchExample from '../../src/components/FetchExample';
 
 // Mock the fetch function
+// This is necessary to avoid making actual network requests during tests
 const mockFetch = vi.fn();
 vi.stubGlobal('fetch', mockFetch);
 
