@@ -48,6 +48,5 @@ jobs:
           push: true
           tags: |
             ghcr.io/${{ env.REPO_OWNER_LC }}/frontend-service/my-app:cached
-            cache-from: type=local,src=/tmp/.buildx-cache
-            cache-to: type=local,dest=/tmp/.buildx-cache
-
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
