@@ -37,12 +37,15 @@ jobs:
             docker-cache-${{ github.ref }}-
             docker-cache-
 
+      - name: Set lowercase repository owner
+        run: echo "REPO_OWNER_LC=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
+
       - name: Build and push Docker image (cached)
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/frontend-service/my-app:cached
+            ghcr.io/${{ env.REPO_OWNER_LC }}/frontend-service/my-app:cached
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
