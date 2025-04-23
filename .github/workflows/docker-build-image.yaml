@@ -40,10 +40,11 @@ jobs:
       - name: Set lowercase repository owner
         run: echo "REPO_OWNER_LC=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
 
-      - name: Build and push Docker image (cached)
+      - name: Build and push Docker image 
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: ./webclient
+          file: ./webclient/Dockerfile
           push: true
           tags: |
             ghcr.io/${{ env.REPO_OWNER_LC }}/frontend-service/my-app:cached
