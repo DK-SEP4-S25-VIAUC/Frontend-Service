@@ -1,4 +1,4 @@
-name: Run Vitest Tests and Report
+name: Run Tests and Report
 on:
   pull_request:
     branches: [ main, master, feature/main ]
@@ -36,42 +36,48 @@ jobs:
           name: Vitest Tests
           path: WebClient/junit.xml
           reporter: jest-junit
-          list-suites: all
-          list-tests: failed
-          fail-on-error: false
-          
-      - name: Generate detailed test summary
-        if: success() || failure()
-        id: test-summary
+      
+      - name: Get Detailed Test Results
+        if: always()
+        id: test-details
         run: |
           echo "### Test Results Summary 📊" > test-summary.md
           echo "" >> test-summary.md
           
-          # Extract test stats from the XML
-          TOTAL=$(grep -c "<testcase" junit.xml)
-          FAILED=$(grep -c "<failure" junit.xml || echo 0)
-          PASSED=$((TOTAL - FAILED))
-          TIME=$(grep "time=" junit.xml | head -1 | sed 's/.*time="\([^"]*\).*/\1/')
-          
-          echo "✅ **$PASSED** tests passed" >> test-summary.md
-          if [ "$FAILED" -gt "0" ]; then
-            echo "❌ **$FAILED** tests failed" >> test-summary.md
+          if [ ! -f junit.xml ]; then
+            echo "❌ No test results found" >> test-summary.md
+          else
+            # Use a more reliable approach to parse XML
+            TOTAL=$(grep -c "<testcase " junit.xml || echo 0)
+            FAILED=$(grep -c "<failure" junit.xml || echo 0)
+            SKIPPED=$(grep -c "<skipped" junit.xml || echo 0)
+            PASSED=$((TOTAL - FAILED - SKIPPED))
             
-            # Extract names of failed tests
+            echo "✅ **$PASSED** tests passed" >> test-summary.md
+            
+            if [ "$FAILED" -gt "0" ]; then
+              echo "❌ **$FAILED** tests failed" >> test-summary.md
+              echo "" >> test-summary.md
+              echo "#### Failed Tests" >> test-summary.md
+              grep -B 1 "<failure" junit.xml | grep "testcase " | sed 's/.*name="\([^"]*\).*/- \1/' >> test-summary.md
+            fi
+            
+            if [ "$SKIPPED" -gt "0" ]; then
+              echo "⏭️ **$SKIPPED** tests skipped" >> test-summary.md
+            fi
+            
+            # Get test execution time
+            TEST_TIME=$(grep "time=" junit.xml | head -1 | sed 's/.*time="\([^"]*\).*/\1/' || echo "unknown")
             echo "" >> test-summary.md
-            echo "#### Failed Tests" >> test-summary.md
-            grep -B 1 "<failure" junit.xml | grep "<testcase" | sed 's/.*name="\([^"]*\).*/- \1/' >> test-summary.md
+            echo "⏱️ Total time: **${TEST_TIME}s**" >> test-summary.md
           fi
           
           echo "" >> test-summary.md
-          echo "⏱️ Total time: **${TIME}s**" >> test-summary.md
-          echo "" >> test-summary.md
-          echo "[View detailed test report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> test-summary.md
-          
+          echo "### [View Full Test Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> test-summary.md
           cat test-summary.md
-          
+      
       - name: Add test summary to PR
-        if: github.event_name == 'pull_request' && (success() || failure())
+        if: github.event_name == 'pull_request' && always()
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
