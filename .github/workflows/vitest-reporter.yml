@@ -2,7 +2,7 @@ name: Run Vitest Tests and Report
 
 on:
   pull_request:
-    branches: [ main, master ]
+    branches: [ main, master, feature/main ]
 
 jobs:
   test:
