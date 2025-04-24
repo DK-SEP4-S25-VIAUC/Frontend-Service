@@ -1,7 +1,9 @@
 name: Run Tests and Report
+
 on:
   pull_request:
     branches: [ main, master, feature/main ]
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -36,10 +38,3 @@ jobs:
           name: Vitest Tests           # Name of the check run which will be created
           path: WebClient/junit.xml    # Path to test results, relative to repo root
           reporter: jest-junit        # Format of test results (jest-junit works for vitest junit output)
-          
-      - name: Add PR comment with test results link
-        if: github.event_name == 'pull_request' && (success() || failure())
-        run: |
-          gh pr comment ${{ github.event.pull_request.number }} --body "📊 **Test Results**: [View detailed test report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
