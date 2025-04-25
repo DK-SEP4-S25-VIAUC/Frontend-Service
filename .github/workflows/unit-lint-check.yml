@@ -3,8 +3,6 @@ name: Quick Checks - Lint and Unit Tests
 on:
   push:
     branches: [ feature/main ]
-
-
 jobs:
   lint:
     name: ESLint

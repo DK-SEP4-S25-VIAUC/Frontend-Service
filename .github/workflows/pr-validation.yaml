@@ -3,8 +3,6 @@ on:
   pull_request:
     branches: [ main, dev, feature/main ]
     types: [ opened, synchronize, reopened ]
-    paths:
-      - 'WebClient/**'
 permissions:
   contents: read
   pull-requests: write

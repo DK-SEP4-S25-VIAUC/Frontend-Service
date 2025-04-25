@@ -1,7 +1,7 @@
 name: Build and Cache Docker Image
 on:
   push:
-    branches: [ feature/main ]
+    branches: [ main, dev, feature/main ]
     paths:
       - 'WebClient/**'
       - 'WebClient/Dockerfile'
