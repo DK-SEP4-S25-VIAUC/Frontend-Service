@@ -15,7 +15,7 @@ export default defineConfig({
       '/api': {
         target: 'https://sep4api.azure-api.net',
         changeOrigin: true,
-        secure: false, // Optional: Ignore SSL issues during development
+        secure: false,
       },
     },
   }

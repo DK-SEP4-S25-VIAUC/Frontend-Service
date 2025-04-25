@@ -13,7 +13,7 @@ function App() {
       </header>
       <main>
         <FetchExample />
-        <SoilHumidityCard className="" />
+        <SoilHumidityCard className="max-w-3xs" />
       </main>
     </div>
 
