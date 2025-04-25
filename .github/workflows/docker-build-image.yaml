@@ -1,25 +1,20 @@
 name: Build and Cache Docker Image
-
 on:
   push:
     branches: [ feature/main ]
-  pull_request:
-    branches: [ feature/main ]
-    
+    paths:
+      - 'WebClient/**'
+      - 'WebClient/Dockerfile'
 permissions:
   contents: read
-
 jobs:
   docker-build-cache:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-
       - name: Cache Docker layers
         uses: actions/cache@v4
         with:
@@ -28,16 +23,12 @@ jobs:
           restore-keys: |
             docker-cache-${{ github.ref }}-
             docker-cache-
-
-      - name: Set lowercase repository owner
-        run: echo "REPO_OWNER_LC=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
-
       - name: Build Docker image (cache only)
         uses: docker/build-push-action@v5
         with:
           context: ./WebClient
           file: ./WebClient/Dockerfile
-          push: false 
-          tags: dummy  # Required, but won't push
+          push: false
+          tags: dummy
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
