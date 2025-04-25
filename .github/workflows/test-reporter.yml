@@ -38,6 +38,29 @@ jobs:
           path: WebClient/junit.xml
           reporter: jest-junit
       
+      - name: Get Check Run ID
+        id: get-check-run
+        if: github.event_name == 'pull_request' && (success() || failure())
+        run: |
+          # Wait a moment for the check to be created
+          sleep 5
+          
+          # Use GitHub API to get the check run ID
+          CHECK_RUN_ID=$(gh api \
+            repos/${{ github.repository }}/commits/${{ github.event.pull_request.head.sha }}/check-runs \
+            --jq '.check_runs[] | select(.name == "Vitest Tests") | .id')
+          
+          if [ -n "$CHECK_RUN_ID" ]; then
+            echo "CHECK_RUN_ID=$CHECK_RUN_ID" >> $GITHUB_ENV
+            echo "REPORT_URL=https://github.com/${{ github.repository }}/runs/$CHECK_RUN_ID" >> $GITHUB_ENV
+            echo "Found Check Run ID: $CHECK_RUN_ID"
+          else
+            echo "REPORT_URL=https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" >> $GITHUB_ENV
+            echo "Could not find Check Run ID, using fallback URL."
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
       - name: Create detailed test summary comment
         if: github.event_name == 'pull_request' && (success() || failure())
         run: |
@@ -83,11 +106,9 @@ jobs:
             fi
           fi
           
-          # Add links to both the full workflow run and checks page
+          # Add link to full report using the correct URL
           echo "" >> comment.md
-          echo "**[View workflow run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})**" >> comment.md
-          echo "" >> comment.md
-          echo "**[View test report](https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }}/checks)**" >> comment.md
+          echo "**[View detailed test report](${{ env.REPORT_URL }})**" >> comment.md
           
           cat comment.md
       
