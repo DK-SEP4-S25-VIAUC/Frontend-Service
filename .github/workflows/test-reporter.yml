@@ -1,9 +1,7 @@
 name: Run Tests and Report
-
 on:
   pull_request:
     branches: [ main, master, feature/main ]
-
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -21,9 +19,9 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '22'  # Updated to Node 22 as detected in your environment
+          node-version: '22'
           cache: 'npm'
-          cache-dependency-path: './WebClient/package-lock.json'  # Specify the path to your lock file
+          cache-dependency-path: './WebClient/package-lock.json'
       
       - name: Install dependencies
         run: npm ci
@@ -32,9 +30,69 @@ jobs:
         run: npm test -- --reporter=junit --outputFile=./junit.xml
         
       - name: Test Reporter
+        id: test-reporter
         uses: dorny/test-reporter@v1
-        if: success() || failure()    # run this step even if previous step failed
+        if: success() || failure()
         with:
-          name: Vitest Tests           # Name of the check run which will be created
-          path: WebClient/junit.xml    # Path to test results, relative to repo root
-          reporter: jest-junit        # Format of test results (jest-junit works for vitest junit output)
+          name: Vitest Tests
+          path: WebClient/junit.xml
+          reporter: jest-junit
+      
+      - name: Create detailed test summary comment
+        if: github.event_name == 'pull_request' && (success() || failure())
+        run: |
+          # Parse the test results XML to get detailed stats
+          TOTAL=$(grep -c "<testcase " junit.xml || echo 0)
+          FAILED=$(grep -c "<failure" junit.xml || echo 0)
+          SKIPPED=$(grep -c "<skipped" junit.xml || echo 0)
+          PASSED=$((TOTAL - FAILED - SKIPPED))
+          
+          # Create the comment content
+          echo "### 📊 Test Results Summary" > comment.md
+          echo "" >> comment.md
+          
+          if [ "$TOTAL" -eq "0" ]; then
+            echo "❓ No tests were executed" >> comment.md
+          else
+            echo "✅ **${PASSED}** tests passed" >> comment.md
+            
+            if [ "$FAILED" -gt "0" ]; then
+              echo "❌ **${FAILED}** tests failed" >> comment.md
+              
+              # Add details of failed tests
+              echo "" >> comment.md
+              echo "<details><summary>Failed Tests</summary>" >> comment.md
+              echo "" >> comment.md
+              echo "| Test | File |" >> comment.md
+              echo "| ---- | ---- |" >> comment.md
+              
+              grep -B 1 "<failure" junit.xml | grep "testcase " | sed -E 's/.*name="([^"]*)".*classname="([^"]*)".*/| \1 | \2 |/' >> comment.md
+              
+              echo "" >> comment.md
+              echo "</details>" >> comment.md
+            fi
+            
+            if [ "$SKIPPED" -gt "0" ]; then
+              echo "⏭️ **${SKIPPED}** tests skipped" >> comment.md
+            fi
+            
+            # Get test execution time if available
+            if grep -q "time=" junit.xml; then
+              TEST_TIME=$(grep "time=" junit.xml | head -1 | sed 's/.*time="\([^"]*\).*/\1/')
+              echo "⏱️ Total time: **${TEST_TIME}s**" >> comment.md
+            fi
+          fi
+          
+          # Add link to full report
+          echo "" >> comment.md
+          echo "**[View detailed test report](https://github.com/${{ github.repository }}/runs/${{ github.run_id }})**" >> comment.md
+          
+          cat comment.md
+      
+      - name: Post comment to PR
+        if: github.event_name == 'pull_request' && (success() || failure())
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          path: WebClient/comment.md
+          header: test-results
