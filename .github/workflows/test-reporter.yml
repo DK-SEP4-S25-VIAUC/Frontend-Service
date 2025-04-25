@@ -11,7 +11,7 @@ jobs:
       contents: read
     defaults:
       run:
-        working-directory: ./WebClient  # Set the working directory to WebClient
+        working-directory: ./WebClient
     
     steps:
       - uses: actions/checkout@v3
@@ -83,9 +83,11 @@ jobs:
             fi
           fi
           
-          # Add link to full report
+          # Add links to both the full workflow run and checks page
           echo "" >> comment.md
-          echo "**[View detailed test report](https://github.com/${{ github.repository }}/runs/${{ github.run_id }})**" >> comment.md
+          echo "**[View workflow run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})**" >> comment.md
+          echo "" >> comment.md
+          echo "**[View test report](https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }}/checks)**" >> comment.md
           
           cat comment.md
       
