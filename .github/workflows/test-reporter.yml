@@ -37,10 +37,11 @@ jobs:
           files: WebClient/junit.xml
           check_name: "Vitest Test Results"
           comment_title: "📊 Test Results"
-          comment_mode: create-or-update
+          comment_mode: always
           report_individual_runs: true
           deduplicate_classes_by_file_name: false
           compare_to_earlier_commit: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
       
       # Optional: keep the dorny/test-reporter for the GitHub Checks UI
       - name: Test Reporter (for Checks UI)
