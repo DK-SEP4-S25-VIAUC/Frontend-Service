@@ -3,9 +3,7 @@
 on:
   push:
     branches: [ main, dev, feature/main ]
-    paths:
-      - 'WebClient/**'
-      - 'WebClient/Dockerfile'
+
 jobs:
   unit-tests:
     name: Unit Tests

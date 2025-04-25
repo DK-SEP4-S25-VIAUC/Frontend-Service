@@ -1,4 +1,4 @@
-name: Quick Checks - Lint and Unit Tests
+name: Lint Check
 
 on:
   push:
