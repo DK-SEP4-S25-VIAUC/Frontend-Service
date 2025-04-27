@@ -20,7 +20,7 @@ export default function SoilHumidityInput() {
                     <input
                         type="text"
                         className="input input-md w-full placeholder-gray-400 placeholder-center"
-                        placeholder="Enter song title"
+                        placeholder="Enter desired soilhumidity"
                         value={desiredSoilHumidity}
                         onChange={(e) => setDesiredSoilHumidity(e.target.value)}
                     />
