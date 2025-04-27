@@ -1,7 +1,16 @@
 import {useState} from "react";
+import usePostSoilHumidity from "../../hooks/soilhumidity/usePostSoilHumidity.jsx";
 
 export default function SoilHumidityInput() {
     const [desiredSoilHumidity, setDesiredSoilHumidity] = useState(0);
+
+    const{
+        submitSoilHumidityData,
+        isPending,
+        isSuccess,
+        isError,
+        error,
+    } = usePostSoilHumidity();
 
 
     const handleSubmit = (e) => {
@@ -10,6 +19,12 @@ export default function SoilHumidityInput() {
         if (!desiredSoilHumidity) {
             return;
         }
+
+        submitSoilHumidityData({
+            desiredSoilHumidity
+        });
+
+        setDesiredSoilHumidity(0);
     }
 
     return (
@@ -23,6 +38,7 @@ export default function SoilHumidityInput() {
                         placeholder="Enter desired soilhumidity"
                         value={desiredSoilHumidity}
                         onChange={(e) => setDesiredSoilHumidity(e.target.value)}
+                        disabled={isPending}
                     />
                 </div>
                 <button
@@ -30,8 +46,10 @@ export default function SoilHumidityInput() {
                     className="btn btn-primary w-full text-gray-400"
                     disabled={!desiredSoilHumidity}
                 >
-                    Submit!
+                    {isPending ? "Submitting..." : "Submit"}
                 </button>
+                {isSuccess && <p className="text-green-500 text-center">Success!</p>}
+                {isError && <p className="text-red-500 text-center">Error: {error?.response?.data?.message || error.message}</p>}
             </form>
         </>
     )
