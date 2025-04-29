@@ -1,5 +1,6 @@
 import './App.css'
 import FetchExample from "./components/FetchExample.jsx";
+import SoilHumidityCard from './components/soil-humidity/SoilHumidityLatestCard.jsx';
 
 function App() {
 
@@ -12,6 +13,7 @@ function App() {
       </header>
       <main>
         <FetchExample />
+        <SoilHumidityCard className="max-w-3xs" />
       </main>
     </div>
 
