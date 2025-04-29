@@ -80,7 +80,7 @@ function MultipleFetchExample() {
 
                 <ApiData
                     title="MAL API Data"
-                    url="https://sep4api.azure-api.net/mal/Prototype/testEndpoint"
+                    url="https://sep4api.azure-api.net/api/mal/Prototype/testEndpoint"
                 />
             <br/>
 
