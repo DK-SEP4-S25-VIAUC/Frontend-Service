@@ -2,7 +2,7 @@ name: Lint Check
 
 on:
   push:
-    branches: [ feature/main ]
+    branches: [ feature/*, bugfix/*, hotfix/* ]
 jobs:
   lint:
     name: ESLint
