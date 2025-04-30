@@ -1,0 +1,35 @@
+name: Build and deploy a container to an Azure Web App
+
+env:
+  AZURE_WEBAPP_NAME: via-sep4-frontend
+
+on:
+  workflow_run:
+    workflows: ["Build and Push Docker Image After PR Merge"]  # <-- Change this to your first workflow's name
+    types:
+      - completed
+
+permissions:
+  contents: 'read'
+  packages: 'write'
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }} # Only run if the first workflow succeeded
+    runs-on: ubuntu-latest
+
+    environment:
+      name: 'production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Lowercase the repo name
+        run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@85270a1854658d167ab239bce43949edb336fa7c
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          images: 'ghcr.io/${{ env.REPO }}:${{ github.sha }}'
