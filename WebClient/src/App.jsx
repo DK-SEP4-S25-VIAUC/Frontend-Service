@@ -13,7 +13,9 @@ function App() {
       </header>
       <main>
         <FetchExample />
-        <SoilHumidityCard className="max-w-3xs" />
+        <div className="flex justify-center items-center h-full">
+          <SoilHumidityCard className="max-w-3xs " />
+        </div>
       </main>
     </div>
 
