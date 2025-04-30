@@ -19,7 +19,6 @@ permissions:
 
 jobs:
   deploy:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }} # Only run if the first workflow succeeded
     runs-on: ubuntu-latest
 
     environment:
