@@ -4,6 +4,12 @@ env:
   AZURE_WEBAPP_NAME: via-sep4-frontend
 
 on:
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
   workflow_run:
     workflows: ["Build and Push Docker Image After PR Merge"]  # <-- Change this to your first workflow's name
     types:
