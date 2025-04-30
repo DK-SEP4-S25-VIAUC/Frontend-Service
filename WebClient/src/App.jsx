@@ -1,21 +1,17 @@
-import './App.css'
-import FetchExample from "./components/FetchExample.jsx";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import LandingPage from "./pages/landing-page/LandingPage";
 
 function App() {
-
-
-  return (
-
-    <div className="App">
-      <header className="App-header">
-        <h1>Testing API Endpoint</h1>
-      </header>
-      <main>
-        <FetchExample />
-      </main>
-    </div>
-
-  )
+    return (
+        <Router>
+            <div className="min-h-screen">
+                <Routes>
+                    <Route path="/" element={<LandingPage />} />
+                    {/* Hvis du har flere ruter, kan du tilføje dem her */}
+                </Routes>
+            </div>
+        </Router>
+    );
 }
 
-export default App
+export default App;
