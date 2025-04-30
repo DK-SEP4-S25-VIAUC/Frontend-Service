@@ -4,6 +4,8 @@ env:
   AZURE_WEBAPP_NAME: via-sep4-frontend
 
 on:
+  push:
+    branches: [ main, dev]
   workflow_dispatch:
     inputs:
       logLevel:
