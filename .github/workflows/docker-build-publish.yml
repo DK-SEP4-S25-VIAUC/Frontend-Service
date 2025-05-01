@@ -2,7 +2,7 @@ name: Build and Push Docker Image After PR Merge
 
 on:
   pull_request:
-    branches: [ main, dev, feature/main ]
+    branches: [ main ]
     types: [ closed ]
 
 permissions:
