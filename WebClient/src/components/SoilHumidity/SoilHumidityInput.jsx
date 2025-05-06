@@ -2,9 +2,10 @@ import {useState} from "react";
 import usePostSoilHumidity from "../../hooks/soilhumidity/usePostSoilHumidity.jsx";
 
 export default function SoilHumidityInput() {
-    const [desiredSoilHumidity, setDesiredSoilHumidity] = useState(0);
+    const [upperSoilHumidity, setUpperSoilHumidity] = useState(0);
+    const [lowerSoilHumidity, setLowerSoilHumidity] = useState(0);
 
-    const{
+    const {
         submitSoilHumidityData,
         isPending,
         isSuccess,
@@ -16,41 +17,63 @@ export default function SoilHumidityInput() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (!desiredSoilHumidity) {
-            return;
-        }
+        const lowerNum = upperSoilHumidity;
+        const upperNum = lowerSoilHumidity;
 
         submitSoilHumidityData({
-            desiredSoilHumidity
+            lowerbound: lowerNum,
+            upperbound: upperNum,
         });
-
-        setDesiredSoilHumidity(0);
+        if (isSuccess) {
+            setUpperSoilHumidity(0);
+            setLowerSoilHumidity(0);
+        }
     }
 
     return (
-        <>
-            <form onSubmit={handleSubmit} className="space-y-4 p-4 max-w-md mx-auto">
+        <div className="soil-humidity-wrapper bg-gradient-to-br from-green-100 to-blue-100 rounded-2xl shadow-lg p-4 sm:p-6 md:p-8 max-w-sm sm:max-w-md md:max-w-lg w-full mx-auto">
+            <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                    <label className="block mb-1 font-semibold">Set soilhumidity</label>
-                    <input
-                        type="text"
-                        className="input input-md w-full placeholder-gray-400 placeholder-center"
-                        placeholder="Enter desired soilhumidity"
-                        value={desiredSoilHumidity}
-                        onChange={(e) => setDesiredSoilHumidity(e.target.value)}
-                        disabled={isPending}
-                    />
+                    <label className="block mb-2 font-semibold text-gray-700">Set soil humidity</label>
+                    <div className="space-y-4">
+                        <div>
+                            <label className="block mb-1">Lower soil humidity</label>
+                            <input
+                                type="text"
+                                className="input text-center input-md w-full placeholder-gray-400"
+                                placeholder="Enter lower soil humidity"
+                                value={lowerSoilHumidity}
+                                onChange={(e) => setLowerSoilHumidity(e.target.value)}
+                                disabled={isPending}
+                            />
+                        </div>
+                        <div>
+                            <label className="block mb-1">Upper soil humidity</label>
+                            <input
+                                type="text"
+                                className="input text-center input-md w-full placeholder-gray-400"
+                                placeholder="Enter upper soil humidity"
+                                value={upperSoilHumidity}
+                                onChange={(e) => setUpperSoilHumidity(e.target.value)}
+                                disabled={isPending}
+                            />
+                        </div>
+                    </div>
                 </div>
                 <button
                     type="submit"
-                    className="btn btn-primary w-full text-gray-400"
-                    disabled={!desiredSoilHumidity}
+                    className="btn btn-primary w-full text-black"
+                    disabled={!lowerSoilHumidity || isPending}
                 >
                     {isPending ? "Submitting..." : "Submit"}
                 </button>
                 {isSuccess && <p className="text-green-500 text-center">Success!</p>}
-                {isError && <p className="text-red-500 text-center">Error: {error?.response?.data?.message || error.message}</p>}
+                {isError && (
+                    <p className="text-red-500 text-center">
+                        Error: {error?.response?.data?.message || error.message}
+                    </p>
+                )}
             </form>
-        </>
-    )
+        </div>
+    );
 }

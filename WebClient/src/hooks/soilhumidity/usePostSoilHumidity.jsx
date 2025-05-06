@@ -2,12 +2,12 @@ import {useMutation, useQueryClient} from "@tanstack/react-query";
 import axios from "axios";
 
 export default function usePostSoilHumidity() {
-    const endPoint = ""
+    const endPoint = "https://sep4api.azure-api.net/api/iot/soilhumidity/threshold"
 
     const queryClient = useQueryClient();
 
-    const postSoilHumidityData = async (desiredSoilHumidity) => {
-        const response = await axios.post(endPoint,desiredSoilHumidity);
+    const postSoilHumidityData = async (soilHumidity) => {
+        const response = await axios.post(endPoint,soilHumidity);
         return response.data;
     }
 
