@@ -1,44 +1,39 @@
-import { Link } from "react-router-dom";
-
-function Navbar() {
+function Navbar({ setSelectedSection }) {
     return (
-        <div className="w-48 bg-white p-4 rounded-lg shadow-lg border border-gray-300">
-            {/* Navbar header */}
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">Navbar</h2>
-
+        <div className="w-full">
             {/* Navbar Links */}
-            <div className="flex flex-col space-y-2">
-                <div className="w-full">
-                    <Link
-                        to="/soil-sensor"
-                        className="block text-black font-semibold py-2 px-4 rounded transition-all duration-300 hover:bg-gray-500 "
+            <div className="flex flex-col">
+                <div className="w-full mb-6 px-4 py-2 rounded hover:bg-gray-200 transition">
+                    <button
+                        onClick={() => setSelectedSection("soil-sensor")}
+                        className="block text-gray-800 font-medium py-3 px-4 rounded-lg hover:bg-gray-200 transition"
                     >
-                        Soil Sensor
-                    </Link>
+                        Soil moisture
+                    </button>
                 </div>
-                <div className="w-full">
-                    <Link
-                        to="/temperature"
-                        className="block text-gray-800 font-semibold py-2 px-4 rounded transition-all duration-300 hover:bg-gray-500 "
+                <div className="w-full mb-4">
+                    <button
+                        onClick={() => setSelectedSection("temperature")}
+                        className="block text-gray-800 font-medium py-3 px-4 rounded-lg hover:bg-gray-200 transition"
                     >
                         Temperature
-                    </Link>
+                    </button>
                 </div>
-                <div className="w-full">
-                    <Link
-                        to="/light"
-                        className="block text-gray-800 font-semibold py-2 px-4 rounded transition-all duration-300 hover:bg-gray-500 "
+                <div className="w-full mb-4">
+                    <button
+                        onClick={() => setSelectedSection("light")}
+                        className="block text-gray-800 font-medium py-3 px-4 rounded-lg hover:bg-gray-200 transition"
                     >
                         Light
-                    </Link>
+                    </button>
                 </div>
-                <div className="w-full">
-                    <Link
-                        to="/water"
-                        className="block text-gray-800 font-semibold py-2 px-4 rounded transition-all duration-300 hover:bg-gray-500 "
+                <div className="w-full mb-4">
+                    <button
+                        onClick={() => setSelectedSection("water")}
+                        className="block text-gray-800 font-medium py-3 px-4 rounded-lg hover:bg-gray-200 transition"
                     >
                         Water
-                    </Link>
+                    </button>
                 </div>
             </div>
         </div>
