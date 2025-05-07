@@ -1,4 +1,4 @@
-const API_BASE_URL = '/api/IoT/watering';
+const API_BASE_URL = 'https://sep4api.azure-api.net/api/IoT/watering';
 const IS_DEV_MODE = import.meta.env.MODE === 'development';
 
 async function sendWateringRequest(waterAmount) {

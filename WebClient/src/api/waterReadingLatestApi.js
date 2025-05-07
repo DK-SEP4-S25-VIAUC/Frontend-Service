@@ -1,4 +1,4 @@
-const API_BASE_URL = '/api/IoT/water/latest';
+const API_BASE_URL = 'https://sep4api.azure-api.net/api/IoT/water/latest';
 const IS_DEV_MODE = import.meta.env.MODE === 'development';
 
 async function fetchWaterReadingLatest() {
