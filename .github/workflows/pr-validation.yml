@@ -1,0 +1,89 @@
+name: PR Validation
+on:
+  pull_request:
+    branches: [ main, dev, feature/main ]
+    types: [ opened, synchronize, reopened ]
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+jobs:
+  validate:
+    name: Validate PR
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: WebClient/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./WebClient
+
+      - name: Run ESLint
+        id: lint
+        run: npm run lint
+        working-directory: ./WebClient
+        continue-on-error: true
+
+      - name: Run Tests with JUnit reporter
+        id: test
+        run: npm test -- --reporter=junit --outputFile=./junit.xml
+        working-directory: ./WebClient
+        continue-on-error: true
+
+      - name: Build project
+        id: build
+        run: npm run build
+        working-directory: ./WebClient
+        continue-on-error: true
+
+      # Enhanced test reporting
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: WebClient/junit.xml
+          check_name: "Vitest Test Results"
+          comment_title: "📊 Test Results"
+          comment_mode: always
+          report_individual_runs: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      # Comprehensive PR validation summary
+      - name: Review PR
+        uses: actions/github-script@v6
+        if: github.event_name == 'pull_request'
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const lintStatus = '${{ steps.lint.outcome }}' === 'success' ? '✅ Linting checks passed' : '❌ Linting checks failed';
+            const testStatus = '${{ steps.test.outcome }}' === 'success' ? '✅ Tests passing' : '❌ Tests failing';
+            const buildStatus = '${{ steps.build.outcome }}' === 'success' ? '✅ Build succeeded' : '❌ Build failed';
+            const output = `
+            ## Automated PR Review
+            ### Summary
+            | Check | Status |
+            | ----- | ------ |
+            | ESLint | ${lintStatus} |
+            | Tests | ${testStatus} |
+            | Build | ${buildStatus} |
+            ${lintStatus.includes('❌') || testStatus.includes('❌') || buildStatus.includes('❌') ?
+              '⚠️ **Action required:** Please fix the issues above before merging.' :
+              '✨ **All checks passed!** This PR is ready for review.'}
+            
+            For detailed test results, see the test report comment.
+            
+            *This is an automated comment from GitHub Actions.*
+            `;
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            });
