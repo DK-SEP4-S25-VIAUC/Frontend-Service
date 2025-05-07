@@ -16,7 +16,6 @@ export function useSoilHumidityHistory(options = {}) { //If options is not fille
     {
       staleTime,
       refetchOnWindowFocus,
-      enabled,
       ...restOptions,
     }
   )

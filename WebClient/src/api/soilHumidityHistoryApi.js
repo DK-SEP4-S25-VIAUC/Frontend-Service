@@ -7,7 +7,7 @@ export async function fetchSoilHumidityHistory() {
       return await res.json();
     }
 
-    if (process.env.NODE_ENV === 'development' && res.status === 404) {
+    if (import.meta.env.DEV && res.status === 404) {
       return [{
         time_stamp: new Date().toISOString(),
         soil_humidity_value: 0,

@@ -28,7 +28,7 @@ describe('fetchSoilHumidityHistory()', () => {
   })
 
   it('error on error message 500', async () => {
-    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {}) //Hide error from console
+    vi.spyOn(console, 'error').mockImplementation(() => {}) //Hide error from console
 
     fetch.mockResolvedValueOnce({ ok: false, status: 500, statusText: 'Server Error' })
     await expect(fetchSoilHumidityHistory())
