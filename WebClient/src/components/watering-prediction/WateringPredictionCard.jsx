@@ -20,7 +20,7 @@ export default function WateringPredictionCard({ className = "" }) {
         ) : isError ? (
             <ErrorMessage error={error} />
         ) : (
-            <PredictionDisplay value={data.next_watering_time} timestamp={data.time_stamp} />
+            <PredictionDisplay next_watering_time={data.next_watering_time} />
         )}
         </div>
     );

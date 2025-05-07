@@ -8,8 +8,8 @@ export default function Header({ onRefresh }) {
     return (
         <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-                <BeakerIcon className="h-5 w-5 text-emerald-500 dark:text-emerald-400" />
-                <h3 className="text-base font-medium text-gray-800 dark:text-gray-100">Watering Prediction</h3>
+                <BeakerIcon className="h-5 w-5 text-blue-500 dark:text-blue-400" />
+                <h3 className="text-base font-medium text-gray-800 dark:text-gray-100">Your plants need to be watered at:</h3>
             </div>
             <button
                 onClick={onRefresh}

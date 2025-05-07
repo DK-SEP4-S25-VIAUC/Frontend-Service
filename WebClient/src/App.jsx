@@ -16,7 +16,7 @@ function App() {
         <FetchExample />
         <div className="flex justify-center items-center h-full">
           <SoilHumidityCard className="max-w-3xs " />
-          <WateringPredictionCard className="max-w-3xs" />
+          <WateringPredictionCard className="max-w-l" />
         </div>
       </main>
     </div>

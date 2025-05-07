@@ -1,8 +1,10 @@
-const API_BASE_URL = '/api/IoT/soilhumidity/latest';
+const API_BASE_URL = 'https://sep4api.azure-api.net/api/IoT/soilhumidity/latest';
 const IS_DEV_MODE = import.meta.env.MODE === 'development';
 
 async function fetchLatestSoilHumidity() {
   try {
+    console.log('Fetching latest soil humidity data from API:', API_BASE_URL);
+
     const response = await fetch(API_BASE_URL);
 
     // Handle development mode mock data
