@@ -21,7 +21,7 @@ export default function usePostSoilHumidity() {
     } = useMutation({
         mutationFn: postSoilHumidityData,
         onSuccess: async () => {
-            await queryClient.invalidateQueries({})
+            await queryClient.invalidateQueries({ queryKey: ['soilHumidityThreshold'] })
         },
     });
 

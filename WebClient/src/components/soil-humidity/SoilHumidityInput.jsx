@@ -1,5 +1,5 @@
 import {useState} from "react";
-import usePostSoilHumidity from "../../hooks/soilhumidity/usePostSoilHumidity.jsx";
+import usePostSoilHumidity from "../../hooks/soil-humidity/usePostSoilHumidity.jsx";
 
 export default function SoilHumidityInput() {
     const [upperSoilHumidity, setUpperSoilHumidity] = useState(0);
@@ -17,12 +17,12 @@ export default function SoilHumidityInput() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const lowerNum = upperSoilHumidity;
-        const upperNum = lowerSoilHumidity;
+        const lowerNum = lowerSoilHumidity;
+        const upperNum = upperSoilHumidity;
 
         submitSoilHumidityData({
-            lowerbound: lowerNum,
             upperbound: upperNum,
+            lowerbound: lowerNum,
         });
         if (isSuccess) {
             setUpperSoilHumidity(0);
