@@ -1,0 +1,36 @@
+name: Deploy a container to an Azure Web App
+
+env:
+  AZURE_WEBAPP_NAME: via-sep4-frontend
+  IMAGE_NAME: ghcr.io/dk-sep4-s25-viauc/frontend-service/my-app
+
+on:
+  workflow_run:
+    workflows: ["Build and Push Docker Image"]
+    types: [ completed ]
+
+    
+permissions:
+  contents: 'read'
+  packages: 'write'
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    environment:
+      name: 'production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Lowercase the repo name
+        run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@85270a1854658d167ab239bce43949edb336fa7c
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          images: '${{ env.IMAGE_NAME }}:${{ github.sha }}'
