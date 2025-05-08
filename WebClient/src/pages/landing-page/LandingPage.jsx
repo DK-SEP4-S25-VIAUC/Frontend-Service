@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "../navbar/Navbar";
 import Graph from "../../components/graph/Graph";
 
@@ -30,7 +30,7 @@ function LandingPage() {
         switch (selectedSection) {
             case "soil-sensor":
                 return (
-                    <div className="grid grid-cols-2 gap-6 w-full">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
                         <Graph data={{ moisture: soilData.moisture }} title="Soil Moisture" />
                         <Graph data={{ temperature: soilData.temperature }} title="Soil Temperature" />
                     </div>
@@ -54,8 +54,8 @@ function LandingPage() {
                 </div>
             </div>
 
-            <div className="flex">
-                <div className="w-64 border border-black p-4 rounded-lg bg-white mr-6 h-fit">
+            <div className="flex flex-col lg:flex-row">
+                <div className="w-full lg:w-64 border border-black p-4 rounded-lg bg-white mb-4 lg:mb-0 lg:mr-6 h-fit">
                     <Navbar setSelectedSection={setSelectedSection} />
                 </div>
 
