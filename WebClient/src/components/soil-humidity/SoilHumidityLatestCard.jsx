@@ -1,8 +1,8 @@
 import React from "react"
 import { useLatestSoilHumidity } from "../../hooks/soil-humidity/useLatestSoilHumidity"
 import Header from "./soil-humidity-card/Header"
-import Loader from "./soil-humidity-card/Loader"
-import ErrorMessage from "./soil-humidity-card/ErrorMessage"
+import Loader from "../Loader"
+import ErrorMessage from "../ErrorMessage"
 import HumidityDisplay from "./soil-humidity-card/HumidityDisplay"
 
 export default function SoilHumidityCard({ className = "" }) {

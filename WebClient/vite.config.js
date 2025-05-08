@@ -10,13 +10,6 @@ export default defineConfig({
   ],
   server: {
     port: 3000,
-    proxy: {
-      '/api': {
-        target: 'https://sep4api.azure-api.net',
-        changeOrigin: true,
-        secure: false,
-      },
-    },
   },
   test: {
     environment: 'jsdom',
