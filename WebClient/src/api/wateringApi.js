@@ -1,60 +1,25 @@
+import axios from 'axios';
+
 const API_BASE_URL = 'https://sep4api.azure-api.net/api/IoT/watering';
-const IS_DEV_MODE = import.meta.env.MODE === 'development';
 
 async function sendWateringRequest(waterAmount) {
+    console.debug('Watering amount:', waterAmount);
+
     try {
-        const response = await fetch(API_BASE_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                WateringDTO: {
-                    water_amount: waterAmount
-                }
-            })
+        const response = await axios.post(API_BASE_URL, {
+            WateringDTO: {
+                water_amount: waterAmount
+            }
         });
 
-        // Return a mock successful response
-        if (IS_DEV_MODE && (response.status === 404 || response.status === 500)) {
-            console.debug('Development mode: Request failed, returning mock response');
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            return {
-                status: 200,
-                data: {
-                    WateringDTO: {
-                        water_amount: waterAmount
-                    }
-                }
-            };
-        }
+        console.debug('Watering request response:', response.data);
+        return { data: response.data };
+    }
+    catch (error) {
+        const errorMessage = error.response
+            ? `Failed to send watering request: ${error.response.status} - ${error.response.statusText}`
+            : `Failed to send watering request: ${error.message || 'Unknown error'}`;
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.debug('Watering request response:', data);
-        return {
-            data: data
-        };
-    } catch (error) {
-        if (IS_DEV_MODE && error instanceof TypeError && error.message.includes('Failed to fetch')) {
-            console.debug('Development mode: Network error, returning mock response');
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            return {
-                status: 200,
-                data: {
-                    WateringDTO: {
-                        water_amount: waterAmount
-                    }
-                }
-            };
-        }
-
-        const errorMessage = error instanceof Error
-            ? `Failed to send watering request: ${error.message}`
-            : 'Failed to send watering request: Unknown error';
         console.error(errorMessage);
         const enhancedError = new Error(errorMessage);
         enhancedError.originalError = error;

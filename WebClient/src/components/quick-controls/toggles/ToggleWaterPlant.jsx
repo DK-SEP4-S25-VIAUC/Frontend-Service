@@ -1,46 +1,55 @@
-import {Droplets} from "lucide-react";
-import React, {useEffect} from "react";
-import {sendWateringRequest} from "../../../api/wateringApi.js";
-import {toast,ToastContainer} from "react-toastify";
+import { Droplets } from "lucide-react";
+import React, { useEffect } from "react";
+import { toast } from "react-toastify";
+import { useWateringRequest } from "../../../hooks/watering/useWateringRequest.js";
 
-
-export default function ToggleWaterPlant({isDisabled, waterAmount}) {
-
+export default function ToggleWaterPlant({ isDisabled, waterAmount }) {
     useEffect(() => {
         console.debug("ToggleWaterPlant received waterAmount:", waterAmount);
     }, [waterAmount]);
 
-    const handleWaterPlant = async () => {
-        if (isDisabled) return;
-
-        try{
-            const toastId = toast.loading("Watering plant...");
-
-            const result = await sendWateringRequest(waterAmount);
-            console.debug("Watering successful:", result);
-            toast.update(toastId, {
-                render: 'Watering successful: ' + result.data.waterAmount,
+    const wateringMutation = useWateringRequest({
+        onSuccess: (data) => {
+            toast.update("watering", {
+                render: `Watering successful: ${data.data.waterAmount}`,
                 type: "success",
                 isLoading: false,
                 autoClose: 2000,
             });
-
-        } catch (error) {
-            console.error("watering failed:", error);
-            toast.error(`Watering failed: ${error.message}`);
+            console.debug("Watering successful:", data);
+        },
+        onError: (error) => {
+            toast.update("watering", {
+                render: `Watering failed: ${error.message}`,
+                type: "error",
+                isLoading: false,
+                autoClose: 2000,
+            });
+            console.error("Watering failed:", error);
         }
-    }
+    });
+
+    const handleWaterPlant = () => {
+        if (isDisabled) return;
+        toast.loading("Watering plant...", { toastId: "watering" });
+        wateringMutation.mutate(waterAmount);
+    };
 
     return (
         <div className="flex flex-col items-center">
             <div
-                className={`bg-gray-100 dark:bg-gray-700 rounded-md w-12 h-12 flex items-center justify-center mb-2 ${isDisabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer'} transition-colors`}
-            onClick={handleWaterPlant}>
+                className={`bg-gray-100 dark:bg-gray-700 rounded-md w-12 h-12 flex items-center justify-center mb-2 ${
+                    isDisabled || wateringMutation.isPending
+                        ? "opacity-50 cursor-not-allowed"
+                        : "hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer"
+                } transition-colors`}
+                onClick={handleWaterPlant}
+            >
                 <Droplets size={20} className="text-gray-600 dark:text-gray-300" />
             </div>
             <span className="text-xs text-gray-600 dark:text-gray-300">
-                Water Plant {waterAmount ? `(${waterAmount}ml)` : ''}
+                Water Plant {waterAmount ? `(${waterAmount}ml)` : ""}
             </span>
         </div>
-    )
+    );
 }
