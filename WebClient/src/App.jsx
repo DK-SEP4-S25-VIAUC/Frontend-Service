@@ -7,7 +7,6 @@ function App() {
             <div className="min-h-screen">
                 <Routes>
                     <Route path="/" element={<LandingPage />} />
-                    {/* Hvis du har flere ruter, kan du tilføje dem her */}
                 </Routes>
             </div>
         </Router>
