@@ -1,12 +1,12 @@
-const API_BASE_URL = '/api/IoT/soilhumidity';
+const API_BASE_URL = 'https://sep4api.azure-api.net/api/IoT/soilhumidity';
 
 export async function fetchSoilHumidityHistory() {
   try {
     const res = await fetch(API_BASE_URL);
+    console.log(API_BASE_URL);
     if (res.ok) {
       return await res.json();
     }
-
     if (import.meta.env.DEV && res.status === 404) {
       return [{
         time_stamp: new Date().toISOString(),
