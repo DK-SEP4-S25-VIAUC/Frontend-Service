@@ -5,12 +5,10 @@ import { useLatestSoilHumidity } from "../../hooks/soil-humidity/useLatestSoilHu
 export default function SoilHumidityAlert() {
     const [warning, setWarning] = useState(false);
 
-    // these three hooks are always called, in this order:
     const { soilHumidityThreshold, error, isLoading } = useGetThreshold();
     const { data } = useLatestSoilHumidity();
 
     useEffect(() => {
-        // guard so we don't run logic until we have real numbers
         if (
             isLoading ||
             error ||
@@ -35,7 +33,6 @@ export default function SoilHumidityAlert() {
         data?.soil_humidity_value,
     ]);
 
-    // now it's safe to bail out UI-wise
     if (isLoading) {
         return <p className="text-gray-500">Loading soil humidity alert…</p>;
     }
