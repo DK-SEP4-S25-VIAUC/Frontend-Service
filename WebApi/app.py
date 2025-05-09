@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_jwt_extended import JWTManager
+from flask_migrate import Migrate
 from config import Config
 from models import db
 from routes.auth import auth_bp
@@ -9,6 +10,7 @@ app.config.from_object(Config)
 
 db.init_app(app)
 jwt = JWTManager(app)
+migrate = Migrate(app, db) 
 
 app.register_blueprint(auth_bp, url_prefix='/api/auth')
 

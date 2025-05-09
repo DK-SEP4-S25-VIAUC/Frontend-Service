@@ -27,6 +27,37 @@ def login():
         return jsonify(access_token=access_token), 200
     return jsonify({"message": "Invalid credentials"}), 401
 
+@auth_bp.route('/settings', methods=['GET'])
+@jwt_required()
+def get_settings():
+    current_username = get_jwt_identity()
+    user = User.query.filter_by(username=current_username).first()
+
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+
+    return jsonify(settings=user.settings), 200
+
+@auth_bp.route('/settings', methods=['PATCH'])
+@jwt_required()
+def update_settings():
+    current_username = get_jwt_identity()
+    user = User.query.filter_by(username=current_username).first()
+
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+
+    new_settings = request.get_json()
+
+    if user.settings is None:
+        user.settings = {}
+
+    user.settings.update(new_settings)
+    db.session.commit()
+
+    return jsonify({"message": "Settings updated", "settings": user.settings}), 200
+
+
 
 @auth_bp.route('/protected', methods=['GET'])
 @jwt_required()
