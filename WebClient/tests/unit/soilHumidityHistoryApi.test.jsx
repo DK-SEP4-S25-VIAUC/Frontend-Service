@@ -24,7 +24,7 @@ describe('fetchSoilHumidityHistory()', () => {
 
     const data = await fetchSoilHumidityHistory() //Calls out function with fetch (is set to the mocked)
     expect(data).toEqual(mockData) 
-    expect(fetch).toHaveBeenCalledWith('/api/IoT/soilhumidity')
+    expect(fetch).toHaveBeenCalledWith('https://sep4api.azure-api.net/api/IoT/soilhumidity')
   })
 
   it('error on error message 500', async () => {
