@@ -3,6 +3,8 @@ const IS_DEV_MODE = import.meta.env.MODE === 'development';
 
 async function fetchLatestSoilHumidity() {
   try {
+    console.log('Fetching latest soil humidity data from API:', API_BASE_URL);
+
     const response = await fetch(API_BASE_URL);
 
     // Handle development mode mock data
