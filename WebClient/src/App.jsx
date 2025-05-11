@@ -1,19 +1,15 @@
-
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import LandingPage from "./pages/landing-page/LandingPage";
-import FetchExample from "./components/FetchExample.jsx";
+import './App.css'
 import SoilHumidityCard from './components/soil-humidity/SoilHumidityLatestCard.jsx';
-import WateringPredictionCard from './components/watering-prediction/WateringPredictionCard.jsx';
 import QuickControlCard from "./components/quick-controls/QuickControlCard.jsx";
 import {ToastContainer} from "react-toastify";
 import WaterReadingLatestCard from "./components/water-reading/WaterReadingLatestCard.jsx";
 
-
 function App() {
-    return (
-        <Router>
-            <div className="min-h-screen">
-       <ToastContainer
+
+
+  return (
+    <div className="App">
+        <ToastContainer
             position="top-right">
             autoClose={5000}
             hideProgressBar={false}
@@ -24,21 +20,23 @@ function App() {
             draggable
             pauseOnHover
         </ToastContainer>
-                <Routes>
-                    <Route path="/" element={<LandingPage />} />
-                    {/* Tilføj ekstra ruter hvis nødvendigt */}
-                </Routes>
-                {/* Hvis du vil inkludere komponenterne som en del af landing page */}
-                <div className="flex justify-center items-center h-full">
-                    <SoilHumidityCard className="max-w-3xs" />
-                    <WateringPredictionCard className="max-w-l" />
-                       <WaterReadingLatestCard></WaterReadingLatestCard>
- <QuickControlCard></QuickControlCard>
-                    <FetchExample />
-                </div>
-            </div>
-        </Router>
-    );
+      <header className="App-header m-4">
+        <h1>Testing API Endpoint</h1>
+      </header>
+      <main>
+        <div className="flex justify-center items-center h-full">
+          <SoilHumidityCard className="max-w-3xs " />
+            <div className={"m-3"}></div>
+            <WaterReadingLatestCard></WaterReadingLatestCard>
+        </div>
+          <div className={"m-4"}>
+              <QuickControlCard></QuickControlCard>
+          </div>
+
+      </main>
+    </div>
+
+  )
 }
 
-export default App;
+export default App
