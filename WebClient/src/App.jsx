@@ -30,11 +30,6 @@ function App() {
                 </Routes>
                 {/* Hvis du vil inkludere komponenterne som en del af landing page */}
                 <div className="flex justify-center items-center h-full">
-                    <SoilHumidityCard className="max-w-3xs" />
-                    <WateringPredictionCard className="max-w-l" />
-                       <WaterReadingLatestCard></WaterReadingLatestCard>
- <QuickControlCard></QuickControlCard>
-                    <FetchExample />
                 </div>
             </div>
         </Router>
