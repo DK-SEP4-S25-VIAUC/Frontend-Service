@@ -27,7 +27,6 @@ export default function SoilHumidityInput() {
         if (isSuccess) {
             setLowerSoilHumidity(0);
             setUpperSoilHumidity(100);
-            setSuccesMessage("Success");
         }
     };
 
