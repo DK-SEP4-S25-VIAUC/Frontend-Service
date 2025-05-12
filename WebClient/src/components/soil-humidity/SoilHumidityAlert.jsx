@@ -9,29 +9,28 @@ export default function SoilHumidityAlert() {
     const { data } = useLatestSoilHumidity();
 
     useEffect(() => {
-        if (
-            isLoading ||
-            error ||
-            !soilHumidityThreshold ||
-            typeof soilHumidityThreshold.lowerbound !== "number" ||
-            typeof soilHumidityThreshold.upperbound !== "number" ||
-            !data ||
-            typeof data.soil_humidity_value !== "number"
-        ) {
-            return;
-        }
+    if (
+        isLoading ||
+        error ||
+        !soilHumidityThreshold ||
+        typeof soilHumidityThreshold.lowerbound !== "number" ||
+        typeof soilHumidityThreshold.upperbound !== "number" ||
+        !data ||
+        typeof data.soil_humidity_value !== "number"
+    ) {
+        return;
+    }
 
-        const { lowerbound, upperbound } = soilHumidityThreshold;
-        const value = data.soil_humidity_value;
+    const { lowerbound, upperbound } = soilHumidityThreshold;
+    const value = data.soil_humidity_value;
 
-        setWarning(value < lowerbound || value > upperbound);
-    }, [
-        isLoading,
-        error,
-        soilHumidityThreshold?.lowerbound,
-        soilHumidityThreshold?.upperbound,
-        data?.soil_humidity_value,
-    ]);
+    setWarning(value < lowerbound || value > upperbound);
+}, [
+    isLoading,
+    error,
+    soilHumidityThreshold, // Include the entire object
+    data, // Include the entire object
+]);
 
     if (isLoading) {
         return <p className="text-gray-500">Loading soil humidity alert…</p>;
