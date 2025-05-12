@@ -1,7 +1,9 @@
 ﻿name: Unit tests
+
 on:
   push:
     branches: [ main, dev, feature/* ]
+
 jobs:
   unit-tests:
     name: Unit Tests
@@ -14,14 +16,8 @@ jobs:
           node-version: '22'
           cache: 'npm'
           cache-dependency-path: WebClient/package-lock.json
-      - name: Install native dependencies
-        run: |
-          npm install -g @rollup/rollup-linux-x64-gnu lightningcss-linux-x64-gnu
-        working-directory: ./WebClient
-      - name: Clear cache and reinstall
-        run: |
-          rm -rf node_modules package-lock.json
-          npm install
+      - name: Install dependencies
+        run: npm ci
         working-directory: ./WebClient
       - name: Run Tests
         run: npm test
