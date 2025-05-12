@@ -2,7 +2,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/landing-page/LandingPage";
 import {ToastContainer} from "react-toastify";
-import WidgetHeader from "./components/Dashboard/Widget/WidgetHeaderTemplate.jsx";
 
 
 
