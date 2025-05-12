@@ -3,15 +3,15 @@ import React, { useEffect } from "react";
 import { toast } from "react-toastify";
 import { useWateringRequest } from "../../../hooks/watering/useWateringRequest.js";
 
-export default function ToggleWaterPlant({ isDisabled, waterAmount }) {
+export default function ToggleWaterPlant({ isDisabled, waterSeconds }) {
     useEffect(() => {
-        console.debug("ToggleWaterPlant received waterAmount:", waterAmount);
-    }, [waterAmount]);
+        console.debug("ToggleWaterPlant received waterSeconds:", waterSeconds);
+    }, [waterSeconds]);
 
     const wateringMutation = useWateringRequest({
         onSuccess: (data) => {
             toast.update("watering", {
-                render: `Watering successful: ${data.data.waterAmount}`,
+                render: `Watering successful: ${data.data.sec} sec`,
                 type: "success",
                 isLoading: false,
                 autoClose: 2000,
@@ -32,7 +32,7 @@ export default function ToggleWaterPlant({ isDisabled, waterAmount }) {
     const handleWaterPlant = () => {
         if (isDisabled) return;
         toast.loading("Watering plant...", { toastId: "watering" });
-        wateringMutation.mutate(waterAmount);
+        wateringMutation.mutate(waterSeconds);
     };
 
     return (
@@ -48,7 +48,7 @@ export default function ToggleWaterPlant({ isDisabled, waterAmount }) {
                 <Droplets size={20} className="text-gray-600 dark:text-gray-300" />
             </div>
             <span className="text-xs text-gray-600 dark:text-gray-300">
-                Water Plant {waterAmount ? `(${waterAmount}ml)` : ""}
+                Water Plant {waterSeconds ? `(${waterSeconds} sec)` : ""}
             </span>
         </div>
     );
