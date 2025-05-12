@@ -62,13 +62,13 @@ describe('QuickControlCard', () => {
 
             expect(screen.getByText('ToggleLight disabled=true')).toBeInTheDocument();
             expect(screen.getByText('ToggleVentilation disabled=true')).toBeInTheDocument();
-            expect(screen.getByText('ToggleWaterPlant disabled=false waterAmount=100')).toBeInTheDocument();
+            expect(screen.getByText('ToggleWaterPlant disabled=false waterAmount=5')).toBeInTheDocument();
             expect(screen.getByText('AddDevice disabled=true')).toBeInTheDocument();
         });
     });
 
     describe('Toggle Functionality', () => {
-        it('shows water amount input when settings icon is clicked', async () => {
+        it('shows watering duration input when settings icon is clicked', async () => {
             const user = userEvent.setup();
             render(<QuickControlCard />);
 
@@ -77,8 +77,8 @@ describe('QuickControlCard', () => {
 
             // Controls should be hidden, input should be visible
             expect(screen.queryByTestId('toggle-light')).not.toBeInTheDocument();
-            expect(screen.getByText('Amount of water:')).toBeInTheDocument();
-            expect(screen.getByPlaceholderText('Enter value...')).toBeInTheDocument();
+            expect(screen.getByText('Watering duration (in seconds):')).toBeInTheDocument();
+            expect(screen.getByPlaceholderText('e.g. 5')).toBeInTheDocument();
             expect(screen.getByText('Save')).toBeInTheDocument();
         });
 
@@ -90,16 +90,16 @@ describe('QuickControlCard', () => {
 
             // Click to show input
             await user.click(settingsIcon);
-            expect(screen.getByPlaceholderText('Enter value...')).toBeInTheDocument();
+            expect(screen.getByPlaceholderText('e.g. 5')).toBeInTheDocument();
 
             // Click again to show controls
             await user.click(settingsIcon);
             expect(screen.getByTestId('toggle-light')).toBeInTheDocument();
-            expect(screen.queryByPlaceholderText('Enter value...')).not.toBeInTheDocument();
+            expect(screen.queryByPlaceholderText('e.g. 5')).not.toBeInTheDocument();
         });
     });
 
-    describe('Input Validation', () => {
+    describe('Input Validation and Toast Messages', () => {
         it('allows only numeric input', async () => {
             const user = userEvent.setup();
             render(<QuickControlCard />);
@@ -107,8 +107,8 @@ describe('QuickControlCard', () => {
             const settingsIcon = screen.getByTestId('settings-icon');
             await user.click(settingsIcon);
 
-            const input = screen.getByPlaceholderText('Enter value...');
-            expect(input).toHaveValue('100');
+            const input = screen.getByPlaceholderText('e.g. 5');
+            expect(input).toHaveValue('5');
 
             // Try to type non-numeric characters
             await user.clear(input);
@@ -118,40 +118,43 @@ describe('QuickControlCard', () => {
             expect(input).toHaveValue('123456');
         });
 
-        it('shows warning toast for empty input', async () => {
+        it('disables save button for empty input', async () => {
             const user = userEvent.setup();
             render(<QuickControlCard />);
 
             const settingsIcon = screen.getByTestId('settings-icon');
             await user.click(settingsIcon);
 
-            const input = screen.getByPlaceholderText('Enter value...');
+            const input = screen.getByPlaceholderText('e.g. 5');
             await user.clear(input);
 
             const saveButton = screen.getByText('Save');
-            await user.click(saveButton);
+            expect(saveButton).toBeDisabled();
 
-            expect(toast.warning).toHaveBeenCalledWith('Please enter a valid water amount');
+            // Verify no toast was shown
+            expect(toast.warning).not.toHaveBeenCalled();
             expect(toast.success).not.toHaveBeenCalled();
         });
 
-        it('shows warning toast for zero input', async () => {
+        it('disables save button for zero input', async () => {
             const user = userEvent.setup();
             render(<QuickControlCard />);
 
             const settingsIcon = screen.getByTestId('settings-icon');
             await user.click(settingsIcon);
 
-            const input = screen.getByPlaceholderText('Enter value...');
+            const input = screen.getByPlaceholderText('e.g. 5');
             await user.clear(input);
             await user.type(input, '0');
 
             const saveButton = screen.getByText('Save');
-            await user.click(saveButton);
+            expect(saveButton).toBeDisabled();
 
-            expect(toast.warning).toHaveBeenCalledWith('Please enter a valid water amount');
+            // Verify no toast was shown
+            expect(toast.warning).not.toHaveBeenCalled();
             expect(toast.success).not.toHaveBeenCalled();
         });
+
 
         it('shows success toast and returns to controls for valid input', async () => {
             const user = userEvent.setup();
@@ -160,46 +163,63 @@ describe('QuickControlCard', () => {
             const settingsIcon = screen.getByTestId('settings-icon');
             await user.click(settingsIcon);
 
-            const input = screen.getByPlaceholderText('Enter value...');
+            const input = screen.getByPlaceholderText('e.g. 5');
             await user.clear(input);
-            await user.type(input, '250');
+            await user.type(input, '10');
 
             const saveButton = screen.getByText('Save');
             await user.click(saveButton);
 
-            expect(toast.success).toHaveBeenCalledWith('Water amount set to 250ml');
+            expect(toast.success).toHaveBeenCalledWith('Watering duration set to 10 seconds');
             expect(toast.warning).not.toHaveBeenCalled();
 
             // Should return to controls view
             expect(screen.getByTestId('toggle-light')).toBeInTheDocument();
-            expect(screen.queryByPlaceholderText('Enter value...')).not.toBeInTheDocument();
+            expect(screen.queryByPlaceholderText('e.g. 5')).not.toBeInTheDocument();
+        });
+
+        it('uses singular form in success toast for 1 second', async () => {
+            const user = userEvent.setup();
+            render(<QuickControlCard />);
+
+            const settingsIcon = screen.getByTestId('settings-icon');
+            await user.click(settingsIcon);
+
+            const input = screen.getByPlaceholderText('e.g. 5');
+            await user.clear(input);
+            await user.type(input, '1');
+
+            const saveButton = screen.getByText('Save');
+            await user.click(saveButton);
+
+            expect(toast.success).toHaveBeenCalledWith('Watering duration set to 1 second');
         });
     });
 
     describe('State Management', () => {
-        it('updates water amount prop when input changes', async () => {
+        it('updates waterAmount prop when input changes', async () => {
             const user = userEvent.setup();
             render(<QuickControlCard />);
 
-            // Initial water amount should be 100
-            expect(screen.getByText('ToggleWaterPlant disabled=false waterAmount=100')).toBeInTheDocument();
+            // Initial watering seconds should be 5
+            expect(screen.getByText('ToggleWaterPlant disabled=false waterAmount=5')).toBeInTheDocument();
 
-            // Change water amount
+            // Change watering seconds
             const settingsIcon = screen.getByTestId('settings-icon');
             await user.click(settingsIcon);
 
-            const input = screen.getByPlaceholderText('Enter value...');
+            const input = screen.getByPlaceholderText('e.g. 5');
             await user.clear(input);
-            await user.type(input, '300');
+            await user.type(input, '15');
 
             const saveButton = screen.getByText('Save');
             await user.click(saveButton);
 
             // Water amount should be updated
-            expect(screen.getByText('ToggleWaterPlant disabled=false waterAmount=300')).toBeInTheDocument();
+            expect(screen.getByText('ToggleWaterPlant disabled=false waterAmount=15')).toBeInTheDocument();
         });
 
-        it('maintains water amount value when toggling views', async () => {
+        it('maintains watering duration value when toggling views without saving', async () => {
             const user = userEvent.setup();
             render(<QuickControlCard />);
 
@@ -207,19 +227,19 @@ describe('QuickControlCard', () => {
 
             // Go to input view and change value
             await user.click(settingsIcon);
-            const input = screen.getByPlaceholderText('Enter value...');
+            const input = screen.getByPlaceholderText('e.g. 5');
             await user.clear(input);
-            await user.type(input, '500');
+            await user.type(input, '20');
 
             // Toggle back to controls without saving
             await user.click(settingsIcon);
 
-            // Water amount should still be 500 (unchanged)
-            expect(screen.getByText('ToggleWaterPlant disabled=false waterAmount=500')).toBeInTheDocument();
+            // Water amount should still be 5 (unchanged)
+            expect(screen.getByText('ToggleWaterPlant disabled=false waterAmount=5')).toBeInTheDocument();
 
-            // Go back to input view, value should still be 500
+            // Go back to input view, value should be 20
             await user.click(settingsIcon);
-            expect(input).toHaveValue('500');
+            expect(screen.getByPlaceholderText('e.g. 5')).toHaveValue('20');
         });
     });
 
@@ -230,8 +250,8 @@ describe('QuickControlCard', () => {
             const settingsIcon = screen.getByTestId('settings-icon');
             fireEvent.click(settingsIcon);
 
-            expect(screen.getByText('Amount of water:')).toBeInTheDocument();
-            expect(screen.getByPlaceholderText('Enter value...')).toBeInTheDocument();
+            expect(screen.getByText('Watering duration (in seconds):')).toBeInTheDocument();
+            expect(screen.getByPlaceholderText('e.g. 5')).toBeInTheDocument();
         });
 
         it('settings icon is clickable and focusable', () => {
@@ -239,6 +259,27 @@ describe('QuickControlCard', () => {
 
             const settingsIcon = screen.getByTestId('settings-icon');
             expect(settingsIcon).toHaveClass('cursor-pointer');
+        });
+
+        it('disables save button for invalid input', async () => {
+            const user = userEvent.setup();
+            render(<QuickControlCard />);
+
+            const settingsIcon = screen.getByTestId('settings-icon');
+            await user.click(settingsIcon);
+
+            const input = screen.getByPlaceholderText('e.g. 5');
+            await user.clear(input);
+
+            const saveButton = screen.getByText('Save');
+            expect(saveButton).toBeDisabled();
+
+            await user.type(input, '0');
+            expect(saveButton).toBeDisabled();
+
+            await user.clear(input);
+            await user.type(input, '10');
+            expect(saveButton).not.toBeDisabled();
         });
     });
 });
