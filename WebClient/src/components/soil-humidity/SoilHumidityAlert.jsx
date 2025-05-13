@@ -50,26 +50,26 @@ export default function SoilHumidityAlert() {
                         <p className="text-green-600">✅ All good—no warning.</p>
                     )}
                 </div>
-                <div className="mt-2 max-w-sm mx-auto p-6 bg-white rounded-2xl shadow-lg">
-
-                    <div className="text-center text-lg font-semibold text-gray-800 mb-4">
+                <div className="mt-2 mx-auto max-w-full sm:max-w-sm p-6 bg-white rounded-2xl shadow-lg">
+                    {/* Heading will now wrap normally */}
+                    <div className="text-center text-lg sm:text-xl font-semibold text-gray-800 mb-4 break-words">
                         Current Boundaries
                     </div>
 
-                    <div className="flex justify-between gap-6">
-                        <div className="flex-1 text-center">
-                            <p className="uppercase text-xs text-gray-500 tracking-wider">
+                    <div className="flex flex-col sm:flex-row flex-wrap sm:flex-nowrap justify-between gap-6">
+                        <div className="flex-1 min-w-0 text-center">
+                            <p className="uppercase text-xs text-gray-500 tracking-wider break-normal">
                                 Lower Bound
                             </p>
-                            <p className="mt-1 text-2xl font-medium text-gray-900">
+                            <p className="mt-1 text-xl sm:text-2xl font-medium text-gray-900 break-words">
                                 {soilHumidityThreshold.lowerbound}
                             </p>
                         </div>
-                        <div className="flex-1 text-center">
-                            <p className="uppercase text-xs text-gray-500 tracking-wider">
+                        <div className="flex-1 min-w-0 text-center">
+                            <p className="uppercase text-xs text-gray-500 tracking-wider break-normal">
                                 Upper Bound
                             </p>
-                            <p className="mt-1 text-2xl font-medium text-gray-900">
+                            <p className="mt-1 text-xl sm:text-2xl font-medium text-gray-900 break-words">
                                 {soilHumidityThreshold.upperbound}
                             </p>
                         </div>
