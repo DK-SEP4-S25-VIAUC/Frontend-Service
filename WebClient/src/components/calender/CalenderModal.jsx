@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import GraphCalendarDisplay from './GraphCalenderDisplay';
 
-export default function CalendarModal({ onClose }) {
-  const [range, setRange] = useState([new Date(), new Date()]);
+export default function CalendarModal({ onClose, range, setRange }) {
 
   return (
     <div className="fixed inset-0 bg-transparent flex items-center justify-start sm:justify-center z-50 px-2">

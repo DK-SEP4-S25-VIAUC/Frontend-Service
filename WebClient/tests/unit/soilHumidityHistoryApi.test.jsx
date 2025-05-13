@@ -1,47 +1,64 @@
-import { describe, it, expect, beforeEach, afterAll, vi } from 'vitest'
-import { fetchSoilHumidityHistory } from '../../src/api/soilHumidityHistoryApi'
+import { describe, it, expect, beforeEach, afterAll, vi } from 'vitest';
+import { fetchSoilHumidityHistory } from '../../src/api/soilHumidityHistoryApi';
 
-const OLD_ENV = process.env //Enviroment before test
+const OLD_ENV = process.env;
 
-beforeEach(() => { //Runs before every test
-  vi.resetModules() //Clears cache
-  process.env = { ...OLD_ENV, NODE_ENV: 'development' } //Sets to dev env
-  global.fetch = vi.fn() //Mocked fetch
-})
+const FROM_DATE = '2025-05-12T14:46:00.00Z';
+const TO_DATE = '2025-05-12T15:52:00.00Z';
+const API_URL = `https://sep4api.azure-api.net/api/iot/sample?from=${encodeURIComponent(FROM_DATE)}&to=${encodeURIComponent(TO_DATE)}`;
 
-afterAll(() => { //After all tests
-  process.env = OLD_ENV //Restores env
-  delete global.fetch //Deletes mock fetch
-})
+beforeEach(() => {
+  vi.resetModules();
+  process.env = { ...OLD_ENV, NODE_ENV: 'development' };
+  global.fetch = vi.fn();
+});
 
-describe('fetchSoilHumidityHistory()', () => {
-  it('returns JSON array on 200(Success)', async () => {
-    const mockData = [{ id: 1, time_stamp: '2025-05-06T10:00:00Z', soil_humidity_value: 42 }]
-    fetch.mockResolvedValueOnce({ //Mocks fetch seen above
+afterAll(() => {
+  process.env = OLD_ENV;
+  delete global.fetch;
+});
+
+describe('fetchSoilHumidityHistory(from, to)', () => {
+  it('returns SampleDTOs on 200 (Success)', async () => {
+    const mockApiResponse = {
+      response: {
+        list: [
+          { SampleDTO: { id: 1, soil_humidity: 45, timestamp: '2025-01-01T00:00:00Z' } },
+          { SampleDTO: { id: 2, soil_humidity: 42, timestamp: '2025-01-01T01:00:00Z' } },
+        ],
+      },
+    };
+
+    fetch.mockResolvedValueOnce({
       ok: true,
-      json: () => Promise.resolve(mockData),
-    })
+      json: () => Promise.resolve(mockApiResponse),
+    });
 
-    const data = await fetchSoilHumidityHistory() //Calls out function with fetch (is set to the mocked)
-    expect(data).toEqual(mockData) 
-    expect(fetch).toHaveBeenCalledWith('https://sep4api.azure-api.net/api/IoT/soilhumidity')
-  })
+    const data = await fetchSoilHumidityHistory(FROM_DATE, TO_DATE);
 
-  it('error on error message 500', async () => {
-    vi.spyOn(console, 'error').mockImplementation(() => {}) //Hide error from console
+    expect(data).toEqual([
+      { id: 1, soil_humidity: 45, timestamp: '2025-01-01T00:00:00Z' },
+      { id: 2, soil_humidity: 42, timestamp: '2025-01-01T01:00:00Z' },
+    ]);
 
-    fetch.mockResolvedValueOnce({ ok: false, status: 500, statusText: 'Server Error' })
-    await expect(fetchSoilHumidityHistory())
+    expect(fetch).toHaveBeenCalledWith(API_URL, { method: 'GET', redirect: 'follow' });
+  });
+
+  it('throws error on 500 status', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    fetch.mockResolvedValueOnce({ ok: false, status: 500, statusText: 'Server Error' });
+
+    await expect(fetchSoilHumidityHistory(FROM_DATE, TO_DATE))
       .rejects
-      .toThrow('HTTP Error: 500 Server Error')
-  })
+      .toThrow('HTTP Error: 500 Server Error');
+  });
 
-  it('in dev-mode, 404 returns a mock array of 1 object', async () => {
-    fetch.mockResolvedValueOnce({ ok: false, status: 404 })
-    const data = await fetchSoilHumidityHistory()
-    expect(Array.isArray(data)).toBe(true)
-    expect(data).toHaveLength(1)
-    expect(data[0]).toHaveProperty('soil_humidity_value')
-    expect(data[0]).toHaveProperty('time_stamp')
-  })
-})
+  it('returns mock data on 404 in development', async () => {
+    fetch.mockResolvedValueOnce({ ok: false, status: 404 });
+
+    const data = await fetchSoilHumidityHistory(FROM_DATE, TO_DATE);
+    expect(data).toHaveLength(1);
+    expect(data[0]).toHaveProperty('timestamp');
+    expect(data[0]).toHaveProperty('soil_humidity');
+  });
+});

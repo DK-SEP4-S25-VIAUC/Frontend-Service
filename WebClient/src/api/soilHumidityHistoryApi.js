@@ -1,16 +1,32 @@
-const API_BASE_URL = 'https://sep4api.azure-api.net/api/IoT/soilhumidity';
+const API_BASE_URL = 'https://sep4api.azure-api.net/api/iot/sample';
 
-export async function fetchSoilHumidityHistory() {
+export async function fetchSoilHumidityHistory(from, to) {
+  const url = `${API_BASE_URL}?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`;
+  const requestOptions = {
+    method: 'GET',
+    redirect: 'follow',
+  };
+
   try {
-    const res = await fetch(API_BASE_URL);
-    console.log(API_BASE_URL);
+    const res = await fetch(url, requestOptions);
+    console.log(`[API] Request URL: ${url}`);
+
     if (res.ok) {
-      return await res.json();
+      const json = await res.json();
+      const list = json?.response?.list || [];
+
+      return list.map(entry => entry.SampleDTO);
     }
+
     if (import.meta.env.DEV && res.status === 404) {
       return [{
-        time_stamp: new Date().toISOString(),
-        soil_humidity_value: 0,
+        timestamp: new Date().toISOString(),
+        soil_humidity: 0,
+        id: 0,
+        air_humidity: null,
+        air_temperature: null,
+        light_value: null,
+        lower_threshold: null,
       }];
     }
 

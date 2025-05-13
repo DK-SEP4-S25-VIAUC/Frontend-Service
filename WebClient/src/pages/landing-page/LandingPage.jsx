@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import Navbar from "../navbar/Navbar";
 import Graph from "../../components/graph/Graph";
-import CalendarCard from "../../components/calender/CalenderCard";
 import CalendarModal from "../../components/calender/CalenderModal";
+
 function LandingPage() {
     const [selectedSection, setSelectedSection] = useState("soil-sensor");
 
@@ -12,6 +12,7 @@ function LandingPage() {
     });
 
     const [showCalendar, setShowCalendar] = useState(false);
+    const [calendarRange, setCalendarRange] = useState([new Date(), new Date()]);
 
     const temperatureData = { current: 20 };
     const lightData = { intensity: 80 };
@@ -19,7 +20,7 @@ function LandingPage() {
 
     useEffect(() => {
         const interval = setInterval(() => {
-            const newMoisture = Math.floor(Math.random() * 100); // random værdi 0-99
+            const newMoisture = Math.floor(Math.random() * 100);
             setSoilData(prev => ({
                 ...prev,
                 moisture: newMoisture,
@@ -75,8 +76,13 @@ function LandingPage() {
                     {renderContent()}
                 </div>
             </div>
+
             {selectedSection === "soil-sensor" && showCalendar && (
-                <CalendarModal onClose={() => setShowCalendar(false)} />
+                <CalendarModal
+                    onClose={() => setShowCalendar(false)}
+                    range={calendarRange}
+                    setRange={setCalendarRange}
+                />
             )}
         </div>
     );
