@@ -3,10 +3,10 @@ import { useMutation } from "@tanstack/react-query";
 
 const endpoint = "https://sep4api.azure-api.net/api/IoT/watering";
 
-const sendWateringRequest = async (seconds) => {
+const sendWateringRequest = async (ml) => {
     const response = await axios.post(endpoint, {
         cmd: "water",
-        sec: seconds
+        ml: ml
     });
     return response.data;
 };

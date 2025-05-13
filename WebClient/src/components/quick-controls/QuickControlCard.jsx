@@ -8,8 +8,8 @@ import { toast } from 'react-toastify';
 
 export default function QuickControlCard() {
     const [showControls, setShowControls] = useState(true);
-    const [inputValue, setInputValue] = useState('5'); // default to 5 seconds
-    const [wateringSeconds, setWateringSeconds] = useState(5);
+    const [inputValue, setInputValue] = useState('100'); // Default to 100ml
+    const [waterAmount, setWaterAmount] = useState(100);
 
     const toggleControls = () => {
         setShowControls(!showControls);
@@ -21,18 +21,20 @@ export default function QuickControlCard() {
     };
 
     const handleSubmit = () => {
-        const seconds = parseInt(inputValue, 10);
-        if (!seconds || seconds <= 0) {
-            toast.warning('Please enter a valid number of seconds');
+        const ml = parseInt(inputValue, 10);
+
+        if (!ml || ml <= 0) {
+            toast.warning('Please enter a valid water amount in ml');
             return;
         }
-        setWateringSeconds(seconds);
+
+        setWaterAmount(ml);
         setShowControls(true);
-        toast.success(`Watering duration set to ${seconds} second${seconds === 1 ? '' : 's'}`);
+        toast.success(`Water amount set to ${ml} ml`);
     };
 
     return (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 w-full h-full flex flex-col">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 w-full max-w-md">
             <div className="flex items-center relative mb-3">
                 <Settings
                     size={15}
@@ -44,30 +46,31 @@ export default function QuickControlCard() {
                     Quick Controls
                 </h2>
             </div>
+
             {showControls ? (
                 <div className="grid grid-cols-4 gap-2">
                     <ToggleLight isDisabled={true} />
                     <ToggleVentilation isDisabled={true} />
-                    <ToggleWaterPlant isDisabled={false} waterAmount={wateringSeconds} />
+                    <ToggleWaterPlant isDisabled={false} waterAmount={waterAmount} />
                     <AddDevice isDisabled={true} />
                 </div>
             ) : (
-                <div className="w-full flex flex-col space-y-2">
-                    <label htmlFor="wateringInput" className="text-xs text-gray-700 dark:text-gray-300">
-                        Watering duration (in seconds):
+                <div className="w-full">
+                    <label htmlFor="waterInput" className="block pb-1 text-xs text-gray-700 dark:text-gray-300">
+                        Water amount (ml):
                     </label>
                     <input
-                        id="wateringInput"
+                        id="waterInput"
                         type="text"
                         value={inputValue}
                         onChange={handleInputChange}
-                        placeholder="e.g. 5"
-                        className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-100"
+                        placeholder="e.g. 100"
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-100"
                     />
                     <button
                         onClick={handleSubmit}
                         disabled={!inputValue || parseInt(inputValue) <= 0}
-                        className="bg-blue-500 hover:bg-blue-600 text-white rounded-md transition-colors text-sm py-2 px-3 w-full"
+                        className="bg-blue-500 hover:bg-blue-600 text-white rounded-md transition-colors duration-200 mt-2 px-4 py-2 w-full flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         Save
                     </button>

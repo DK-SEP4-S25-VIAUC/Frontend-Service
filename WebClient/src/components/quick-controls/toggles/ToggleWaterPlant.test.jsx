@@ -2,12 +2,10 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import axios from 'axios';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import {useWateringRequest} from "../../../hooks/watering/useWateringRequest.js";
+import { useWateringRequest } from "../../../hooks/watering/useWateringRequest.js";
 
-// Mock axios
 vi.mock('axios');
 
-// Helper to wrap hook in QueryClientProvider
 const createWrapper = () => {
     const queryClient = new QueryClient();
     return ({ children }) => (
@@ -20,7 +18,7 @@ describe('useWateringRequest', () => {
         vi.clearAllMocks();
     });
 
-    it('sends POST request with correct payload', async () => {
+    it('sends POST request with correct payload (ml)', async () => {
         const mockResponse = { data: { success: true } };
         axios.post.mockResolvedValue(mockResponse);
 
@@ -29,12 +27,12 @@ describe('useWateringRequest', () => {
         });
 
         await act(async () => {
-            result.current.mutate(123);
+            result.current.mutate(500); // 500 ml
         });
 
         expect(axios.post).toHaveBeenCalledWith(
             'https://sep4api.azure-api.net/api/IoT/watering',
-            { cmd: 'water', sec: 123 }
+            { cmd: 'water', ml: 500 }
         );
     });
 
@@ -47,14 +45,14 @@ describe('useWateringRequest', () => {
         });
 
         await act(() => {
-            result.current.mutate(100, { onSuccess });
+            result.current.mutate(300, { onSuccess }); // 300 ml
         });
 
         expect(onSuccess).toHaveBeenCalled();
     });
 
     it('calls onError when request fails', async () => {
-        const onError = vi.fn(); // define the mock handler first
+        const onError = vi.fn();
         axios.post.mockRejectedValue(new Error('Network error'));
 
         const { result } = renderHook(() => useWateringRequest({ onError }), {
@@ -62,14 +60,13 @@ describe('useWateringRequest', () => {
         });
 
         await act(async () => {
-            result.current.mutate(50);
+            result.current.mutate(250); // 250 ml
         });
 
-        expect(onError).toHaveBeenCalled(); //
+        expect(onError).toHaveBeenCalled();
 
         const [[errorArg]] = onError.mock.calls;
         expect(errorArg).toBeInstanceOf(Error);
         expect(errorArg.message).toBe('Network error');
     });
-
 });
