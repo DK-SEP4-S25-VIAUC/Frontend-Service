@@ -10,13 +10,29 @@ import { LockIcon, UnlockIcon } from 'lucide-react';
 import WateringPredictionCard from "../watering-prediction/WateringPredictionCard.jsx";
 import WaterReadingLatestCard from "../water-reading/WaterReadingLatestCard.jsx";
 import SoilHumidityAlert from "../soil-humidity/SoilHumidityAlert.jsx";
+import WidgetCompleteTest from "./Widget/WidgetCompleteTest.jsx";
 
 // Apply the width provider to create a responsive grid
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
+const widgetConstraints = {
+    'temperature': {
+        lg: { minW: 3, minH: 3, maxW: 4, maxH: 4 },
+        md: { minW: 2, minH: 2 },
+        sm: { minW: 2, minH: 2 },
+        xs: { minW: 1, minH: 1 }
+    },
+    'humidity': {
+        lg: { minW: 3, minH: 7 },
+        md: { minW: 3, minH: 5 },
+        sm: { minW: 2, minH: 3 },
+        xs: { minW: 1, minH: 7 }
+    },
+    // Add more widgets...
+};
+
 // Utility function to generate responsive layouts
 function generateResponsiveLayouts(widgetKeys, customSettings = {}) {
-    // Default settings for different breakpoints
     const defaultSettings = {
         lg: { cols: 24, itemsPerRow: 6, width: 4, height: 3 },
         md: { cols: 6, itemsPerRow: 2, width: 3, height: 2 },
@@ -24,58 +40,34 @@ function generateResponsiveLayouts(widgetKeys, customSettings = {}) {
         xs: { cols: 1, itemsPerRow: 1, width: 1, height: 2 }
     };
 
-    // Merge custom settings with defaults
     const settings = { ...defaultSettings, ...customSettings };
+    const layouts = { lg: [], md: [], sm: [], xs: [] };
 
-    // Initialize result object
-    const layouts = {
-        lg: [],
-        md: [],
-        sm: [],
-        xs: []
-    };
-
-    // Define widget-specific constraints
-    const widgetConstraints = {
-        'temperature': { minW: 3, minH: 3, maxW: 4, maxH: 4 },
-        'humidity': { minW: 2, minH: 1, maxW: 6, maxH: 3 },
-        'controls': { minW: 3, minH: 2 },
-        'soil': { minW: 2, minH: 2, maxW: 4, maxH: 3 },
-        'light': { minW: 2, minH: 2, maxW: 6, maxH: 6 },
-        'co2': { minW: 2, minH: 2, maxW: 4, maxH: 3 },
-        'water-level': { minW: 2, minH: 2, maxW: 6, maxH: 6 },
-        'battery': { minW: 1, minH: 1, maxW: 2, maxH: 2 },
-        'weather': { minW: 3, minH: 0, maxW: 5, maxH: 12 },
-        'stats': { minW: 3, minH: 2, maxW: 8, maxH: 8 }
-    };
-
-    // Generate layouts for each breakpoint
     Object.keys(layouts).forEach(breakpoint => {
         const { cols, itemsPerRow, width, height } = settings[breakpoint];
 
         widgetKeys.forEach((key, index) => {
-            // Calculate position
             const row = Math.floor(index / itemsPerRow);
             const col = index % itemsPerRow;
-
-            // For xs, special case - stack vertically
             const x = breakpoint === 'xs' ? 0 : col * width;
             const y = row * height;
 
-            // Get constraints for this widget
-            const constraints = widgetConstraints[key] || { minW: 1, minH: 1 };
+            const breakpointConstraints = widgetConstraints[key]?.[breakpoint] || {};
+            const minW = breakpointConstraints.minW ?? 1;
+            const minH = breakpointConstraints.minH ?? 1;
+            const maxW = breakpointConstraints.maxW;
+            const maxH = breakpointConstraints.maxH;
 
-            // Add to layouts with appropriate constraints
             layouts[breakpoint].push({
                 i: key,
                 x,
                 y,
-                w: breakpoint === 'xs' ? cols : width,
-                h: height,
-                minW: constraints.minW || 1,
-                minH: constraints.minH || 1,
-                ...(constraints.maxW && { maxW: constraints.maxW }),
-                ...(constraints.maxH && { maxH: constraints.maxH })
+                w: breakpoint === 'xs' ? cols : minW,
+                h: minH,
+                minW,
+                minH,
+                ...(maxW && { maxW }),
+                ...(maxH && { maxH }),
             });
         });
     });
@@ -98,7 +90,8 @@ function Dashboard() {
         'water',
         'controls',
         'weather',
-        'stats'
+        'stats',
+        'test'
     ];
 
     // Generate layouts automatically or load from localStorage
@@ -146,7 +139,8 @@ function Dashboard() {
         'soil': <SoilWidget />,
         'water-level': <WateringPredictionCard />,
         'weather': <WaterReadingLatestCard />,
-        'stats': <SoilHumidityAlert />
+        'stats': <SoilHumidityAlert />,
+        'test': <WidgetCompleteTest/>
         // Additional components can be added as they're developed
     };
 
