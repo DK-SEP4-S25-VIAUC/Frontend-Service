@@ -6,7 +6,7 @@ export default function AutomaticWateringCard() {
     const [mode, setMode] = useState('manual');
 
     const {
-        data: automaticWateringStatus,
+        automaticWateringStatus,
         isLoading: isGetLoading,
         isError: isGetError,
         error: getError,
