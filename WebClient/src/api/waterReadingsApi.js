@@ -32,7 +32,7 @@ async function fetchWaterReadings() {
         }
     
         const data = await response.json();
-        if (data.length === 0) {
+        if (data.length <= 5) {
             console.debug('Development mode: No data in array, returning mock data');
             const water_readings = [];
 
