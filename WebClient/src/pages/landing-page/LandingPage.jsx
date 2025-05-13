@@ -38,11 +38,10 @@ function LandingPage() {
                         <div className="grid grid-cols-1 md:grid-cols-5 gap-1 w-full items-start">
                             <WateringPredictionCard className="max-w-l md:col-span-2 ml-2 mr-2 " />
                             <SoilHumidityCard className="max-w-3xs md:col-span-1 ml-2 mr-2" />
-                            <WaterReadingLatestCard className="max-w-3xs md:col-span-1" />
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-5 gap-1 w-full items-start">
                             <QuickControlCard className="md:col-span-3 ml-2"></QuickControlCard>
-                            <ActivityHistoryCard className=" md:col-span-3" />
+                            <ActivityHistoryCard className="col-span-3" />
                         </div>
                     </div>
                 );

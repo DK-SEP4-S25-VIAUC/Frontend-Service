@@ -22,17 +22,14 @@ export default function ActivityHistoryCard({ className = "" }) {
                 <ErrorMessage error={error} />
             ) : (
                 <>
-                    <p className="text-sm text-gray-500 dark:text-gray-300 mb-2">
-                        Current Water Level: {data.currentLevel} mL
-                    </p>
-                    <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-12">
                         <LineGraph
                             waterData={data.readings}
                             title="Watered Amount History"
-                            className="md:col-span-8 col-span-12"
+                            className="md:col-span-10 col-span-12"
                         />
                         <WaterReadingLatest
-                            className="md:col-span-4 col-span-12"
+                            className="md:col-span-2 col-span-12"
                             waterReadings={{
                                 data: data.currentLevel,
                                 isLoading,

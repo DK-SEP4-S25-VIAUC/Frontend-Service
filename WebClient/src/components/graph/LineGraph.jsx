@@ -89,7 +89,7 @@ function LineGraph({ waterData, title , className = "" }) {
     };
 
     return (
-        <div className={`${className}p-4 bg-white shadow-md rounded-xl w-full max-w-4xl mx-auto`}>
+        <div className={`${className}p-4 bg-white w-full max-w-4xl mx-auto`}>
             <div className="h-72">
                 <Line data={chartData} options={options} />
             </div>
