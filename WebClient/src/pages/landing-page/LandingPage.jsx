@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Navbar from "../navbar/Navbar";
 import Graph from "../../components/graph/Graph";
 import CalendarModal from "../../components/calender/CalenderModal";
+import SoilHumidityHistoryCard from "../../components/soil-humidity/soil-humidity-history/SoilHumidityHistoryCard";
 
 function LandingPage() {
     const [selectedSection, setSelectedSection] = useState("soil-sensor");
@@ -10,9 +11,6 @@ function LandingPage() {
         moisture: 70,
         temperature: 22,
     });
-
-    const [showCalendar, setShowCalendar] = useState(false);
-    const [calendarRange, setCalendarRange] = useState([new Date(), new Date()]);
 
     const temperatureData = { current: 20 };
     const lightData = { intensity: 80 };
@@ -35,16 +33,11 @@ function LandingPage() {
             case "soil-sensor":
                 return (
                     <div>
-                        <button
-                            onClick={() => setShowCalendar(true)}
-                            className="mb-4 px-4 py-2 bg-pink-500 text-white rounded hover:bg-pink-600"
-                        >
-                            Show Calendar
-                        </button>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
                             <Graph data={{ moisture: soilData.moisture }} title="Soil Moisture" />
                             <Graph data={{ temperature: soilData.temperature }} title="Soil Temperature" />
+                            <SoilHumidityHistoryCard />
                         </div>
                     </div>
                 );
@@ -76,14 +69,6 @@ function LandingPage() {
                     {renderContent()}
                 </div>
             </div>
-
-            {selectedSection === "soil-sensor" && showCalendar && (
-                <CalendarModal
-                    onClose={() => setShowCalendar(false)}
-                    range={calendarRange}
-                    setRange={setCalendarRange}
-                />
-            )}
         </div>
     );
 }

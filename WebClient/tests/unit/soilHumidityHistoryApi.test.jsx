@@ -3,9 +3,13 @@ import { fetchSoilHumidityHistory } from '../../src/api/soilHumidityHistoryApi';
 
 const OLD_ENV = process.env;
 
-const FROM_DATE = '2025-05-12T14:46:00.00Z';
-const TO_DATE = '2025-05-12T15:52:00.00Z';
-const API_URL = `https://sep4api.azure-api.net/api/iot/sample?from=${encodeURIComponent(FROM_DATE)}&to=${encodeURIComponent(TO_DATE)}`;
+const FROM_DATE = new Date('2025-05-12T14:46:00.000Z');
+const TO_DATE = new Date('2025-05-12T15:52:00.000Z');
+
+const FROM_ENCODED = encodeURIComponent(FROM_DATE.toISOString());
+const TO_ENCODED = encodeURIComponent(TO_DATE.toISOString());
+
+const API_URL = `https://sep4api.azure-api.net/api/iot/sample?from=${FROM_ENCODED}&to=${TO_ENCODED}`;
 
 beforeEach(() => {
   vi.resetModules();

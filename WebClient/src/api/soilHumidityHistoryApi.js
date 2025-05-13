@@ -1,7 +1,11 @@
 const API_BASE_URL = 'https://sep4api.azure-api.net/api/iot/sample';
 
 export async function fetchSoilHumidityHistory(from, to) {
-  const url = `${API_BASE_URL}?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`;
+  const fromIso = from.toISOString(); 
+  const toIso = to.toISOString();
+
+  const url = `${API_BASE_URL}?from=${encodeURIComponent(fromIso)}&to=${encodeURIComponent(toIso)}`;
+
   const requestOptions = {
     method: 'GET',
     redirect: 'follow',
