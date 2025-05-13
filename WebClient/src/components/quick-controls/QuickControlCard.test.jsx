@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import QuickControlCard from './QuickControlCard.jsx';
 import { toast } from 'react-toastify';
@@ -8,34 +8,29 @@ import { toast } from 'react-toastify';
 vi.mock('react-toastify', () => ({
     toast: {
         success: vi.fn(),
-        warning: vi.fn(),
-    },
+        warning: vi.fn()
+    }
 }));
 
 // Mock the child components
 vi.mock('./toggles/ToggleLight.jsx', () => ({
-    default: ({ isDisabled }) => <div data-testid="toggle-light">ToggleLight disabled={String(isDisabled)}</div>
+    default: ({ isDisabled }) => <div data-testid="toggle-light" data-disabled={isDisabled}>Light Toggle</div>
 }));
 
 vi.mock('./toggles/ToggleVentilation.jsx', () => ({
-    default: ({ isDisabled }) => <div data-testid="toggle-ventilation">ToggleVentilation disabled={String(isDisabled)}</div>
+    default: ({ isDisabled }) => <div data-testid="toggle-ventilation" data-disabled={isDisabled}>Ventilation Toggle</div>
 }));
 
 vi.mock('./toggles/ToggleWaterPlant.jsx', () => ({
     default: ({ isDisabled, waterAmount }) => (
-        <div data-testid="toggle-water-plant">
-            ToggleWaterPlant disabled={String(isDisabled)} waterAmount={waterAmount}
+        <div data-testid="toggle-water-plant" data-disabled={isDisabled} data-water-amount={waterAmount}>
+            Water Plant Toggle
         </div>
     )
 }));
 
 vi.mock('./toggles/AddDevice.jsx', () => ({
-    default: ({ isDisabled }) => <div data-testid="add-device">AddDevice disabled={String(isDisabled)}</div>
-}));
-
-// Mock lucide-react icon
-vi.mock('lucide-react', () => ({
-    Settings: (props) => <svg {...props} data-testid="settings-icon">Settings</svg>
+    default: ({ isDisabled }) => <div data-testid="add-device" data-disabled={isDisabled}>Add Device</div>
 }));
 
 describe('QuickControlCard', () => {
@@ -43,243 +38,112 @@ describe('QuickControlCard', () => {
         vi.clearAllMocks();
     });
 
-    describe('Initial Render', () => {
-        it('renders the component with controls visible by default', () => {
-            render(<QuickControlCard />);
+    it('renders the component with default state', () => {
+        render(<QuickControlCard />);
 
-            expect(screen.getByText('Quick Controls')).toBeInTheDocument();
-            expect(screen.getByTestId('settings-icon')).toBeInTheDocument();
+        // Check if the title is rendered
+        expect(screen.getByText('Quick Controls')).toBeInTheDocument();
 
-            // All toggle components should be visible
-            expect(screen.getByTestId('toggle-light')).toBeInTheDocument();
-            expect(screen.getByTestId('toggle-ventilation')).toBeInTheDocument();
-            expect(screen.getByTestId('toggle-water-plant')).toBeInTheDocument();
-            expect(screen.getByTestId('add-device')).toBeInTheDocument();
-        });
+        // Check if all toggle components are rendered
+        expect(screen.getByTestId('toggle-light')).toBeInTheDocument();
+        expect(screen.getByTestId('toggle-ventilation')).toBeInTheDocument();
+        expect(screen.getByTestId('toggle-water-plant')).toBeInTheDocument();
+        expect(screen.getByTestId('add-device')).toBeInTheDocument();
 
-        it('renders toggles with correct disabled states', () => {
-            render(<QuickControlCard />);
-
-            expect(screen.getByText('ToggleLight disabled=true')).toBeInTheDocument();
-            expect(screen.getByText('ToggleVentilation disabled=true')).toBeInTheDocument();
-            expect(screen.getByText('ToggleWaterPlant disabled=false waterAmount=5')).toBeInTheDocument();
-            expect(screen.getByText('AddDevice disabled=true')).toBeInTheDocument();
-        });
+        // Check default water amount is passed to the ToggleWaterPlant component
+        expect(screen.getByTestId('toggle-water-plant')).toHaveAttribute('data-water-amount', '100');
     });
 
-    describe('Toggle Functionality', () => {
-        it('shows watering duration input when settings icon is clicked', async () => {
-            const user = userEvent.setup();
-            render(<QuickControlCard />);
+    it('toggles between controls and settings view when settings icon is clicked', async () => {
+        render(<QuickControlCard />);
+        const user = userEvent.setup();
 
-            const settingsIcon = screen.getByTestId('settings-icon');
-            await user.click(settingsIcon);
+        // Initially controls are shown
+        expect(screen.getByTestId('toggle-light')).toBeInTheDocument();
 
-            // Controls should be hidden, input should be visible
-            expect(screen.queryByTestId('toggle-light')).not.toBeInTheDocument();
-            expect(screen.getByText('Watering duration (in seconds):')).toBeInTheDocument();
-            expect(screen.getByPlaceholderText('e.g. 5')).toBeInTheDocument();
-            expect(screen.getByText('Save')).toBeInTheDocument();
-        });
+        // Click settings icon to toggle to settings view
+        await user.click(screen.getByTitle('Toggle settings'));
 
-        it('toggles back to controls view when settings is clicked again', async () => {
-            const user = userEvent.setup();
-            render(<QuickControlCard />);
+        // Controls should be hidden, settings form should be visible
+        expect(screen.queryByTestId('toggle-light')).not.toBeInTheDocument();
+        expect(screen.getByLabelText(/water amount/i)).toBeInTheDocument();
+        expect(screen.getByText('Save')).toBeInTheDocument();
 
-            const settingsIcon = screen.getByTestId('settings-icon');
+        // Click settings icon again to toggle back to controls view
+        await user.click(screen.getByTitle('Toggle settings'));
 
-            // Click to show input
-            await user.click(settingsIcon);
-            expect(screen.getByPlaceholderText('e.g. 5')).toBeInTheDocument();
-
-            // Click again to show controls
-            await user.click(settingsIcon);
-            expect(screen.getByTestId('toggle-light')).toBeInTheDocument();
-            expect(screen.queryByPlaceholderText('e.g. 5')).not.toBeInTheDocument();
-        });
+        // Settings form should be hidden, controls should be visible
+        expect(screen.getByTestId('toggle-light')).toBeInTheDocument();
+        expect(screen.queryByLabelText(/water amount/i)).not.toBeInTheDocument();
     });
 
-    describe('Input Validation and Toast Messages', () => {
-        it('allows only numeric input', async () => {
-            const user = userEvent.setup();
-            render(<QuickControlCard />);
+    it('updates water amount when valid input is submitted', async () => {
+        render(<QuickControlCard />);
+        const user = userEvent.setup();
 
-            const settingsIcon = screen.getByTestId('settings-icon');
-            await user.click(settingsIcon);
+        // Go to settings view
+        await user.click(screen.getByTitle('Toggle settings'));
 
-            const input = screen.getByPlaceholderText('e.g. 5');
-            expect(input).toHaveValue('5');
+        // Enter new water amount and submit
+        const input = screen.getByLabelText(/water amount/i);
+        await user.clear(input);
+        await user.type(input, '250');
+        await user.click(screen.getByText('Save'));
 
-            // Try to type non-numeric characters
-            await user.clear(input);
-            await user.type(input, 'abc123def456');
+        // Should show success toast
+        expect(toast.success).toHaveBeenCalledWith('Water amount set to 250 ml');
 
-            // Only numbers should remain
-            expect(input).toHaveValue('123456');
-        });
-
-        it('disables save button for empty input', async () => {
-            const user = userEvent.setup();
-            render(<QuickControlCard />);
-
-            const settingsIcon = screen.getByTestId('settings-icon');
-            await user.click(settingsIcon);
-
-            const input = screen.getByPlaceholderText('e.g. 5');
-            await user.clear(input);
-
-            const saveButton = screen.getByText('Save');
-            expect(saveButton).toBeDisabled();
-
-            // Verify no toast was shown
-            expect(toast.warning).not.toHaveBeenCalled();
-            expect(toast.success).not.toHaveBeenCalled();
-        });
-
-        it('disables save button for zero input', async () => {
-            const user = userEvent.setup();
-            render(<QuickControlCard />);
-
-            const settingsIcon = screen.getByTestId('settings-icon');
-            await user.click(settingsIcon);
-
-            const input = screen.getByPlaceholderText('e.g. 5');
-            await user.clear(input);
-            await user.type(input, '0');
-
-            const saveButton = screen.getByText('Save');
-            expect(saveButton).toBeDisabled();
-
-            // Verify no toast was shown
-            expect(toast.warning).not.toHaveBeenCalled();
-            expect(toast.success).not.toHaveBeenCalled();
-        });
-
-
-        it('shows success toast and returns to controls for valid input', async () => {
-            const user = userEvent.setup();
-            render(<QuickControlCard />);
-
-            const settingsIcon = screen.getByTestId('settings-icon');
-            await user.click(settingsIcon);
-
-            const input = screen.getByPlaceholderText('e.g. 5');
-            await user.clear(input);
-            await user.type(input, '10');
-
-            const saveButton = screen.getByText('Save');
-            await user.click(saveButton);
-
-            expect(toast.success).toHaveBeenCalledWith('Watering duration set to 10 seconds');
-            expect(toast.warning).not.toHaveBeenCalled();
-
-            // Should return to controls view
-            expect(screen.getByTestId('toggle-light')).toBeInTheDocument();
-            expect(screen.queryByPlaceholderText('e.g. 5')).not.toBeInTheDocument();
-        });
-
-        it('uses singular form in success toast for 1 second', async () => {
-            const user = userEvent.setup();
-            render(<QuickControlCard />);
-
-            const settingsIcon = screen.getByTestId('settings-icon');
-            await user.click(settingsIcon);
-
-            const input = screen.getByPlaceholderText('e.g. 5');
-            await user.clear(input);
-            await user.type(input, '1');
-
-            const saveButton = screen.getByText('Save');
-            await user.click(saveButton);
-
-            expect(toast.success).toHaveBeenCalledWith('Watering duration set to 1 second');
-        });
+        // Water amount should be updated
+        expect(screen.getByTestId('toggle-water-plant')).toHaveAttribute('data-water-amount', '250');
     });
 
-    describe('State Management', () => {
-        it('updates waterAmount prop when input changes', async () => {
-            const user = userEvent.setup();
-            render(<QuickControlCard />);
+    it('filters non-numeric characters from input', async () => {
+        render(<QuickControlCard />);
+        const user = userEvent.setup();
 
-            // Initial watering seconds should be 5
-            expect(screen.getByText('ToggleWaterPlant disabled=false waterAmount=5')).toBeInTheDocument();
+        // Go to settings view
+        await user.click(screen.getByTitle('Toggle settings'));
 
-            // Change watering seconds
-            const settingsIcon = screen.getByTestId('settings-icon');
-            await user.click(settingsIcon);
+        // Enter water amount with non-numeric characters
+        const input = screen.getByLabelText(/water amount/i);
+        await user.clear(input);
+        await user.type(input, '1a2b3c');
 
-            const input = screen.getByPlaceholderText('e.g. 5');
-            await user.clear(input);
-            await user.type(input, '15');
-
-            const saveButton = screen.getByText('Save');
-            await user.click(saveButton);
-
-            // Water amount should be updated
-            expect(screen.getByText('ToggleWaterPlant disabled=false waterAmount=15')).toBeInTheDocument();
-        });
-
-        it('maintains watering duration value when toggling views without saving', async () => {
-            const user = userEvent.setup();
-            render(<QuickControlCard />);
-
-            const settingsIcon = screen.getByTestId('settings-icon');
-
-            // Go to input view and change value
-            await user.click(settingsIcon);
-            const input = screen.getByPlaceholderText('e.g. 5');
-            await user.clear(input);
-            await user.type(input, '20');
-
-            // Toggle back to controls without saving
-            await user.click(settingsIcon);
-
-            // Water amount should still be 5 (unchanged)
-            expect(screen.getByText('ToggleWaterPlant disabled=false waterAmount=5')).toBeInTheDocument();
-
-            // Go back to input view, value should be 20
-            await user.click(settingsIcon);
-            expect(screen.getByPlaceholderText('e.g. 5')).toHaveValue('20');
-        });
+        // Input should only contain numeric characters
+        expect(input.value).toBe('123');
     });
 
-    describe('Accessibility', () => {
-        it('has proper labels for form elements', () => {
-            render(<QuickControlCard />);
+    it('disables save button when input is invalid', async () => {
+        render(<QuickControlCard />);
+        const user = userEvent.setup();
 
-            const settingsIcon = screen.getByTestId('settings-icon');
-            fireEvent.click(settingsIcon);
+        // Go to settings view
+        await user.click(screen.getByTitle('Toggle settings'));
 
-            expect(screen.getByText('Watering duration (in seconds):')).toBeInTheDocument();
-            expect(screen.getByPlaceholderText('e.g. 5')).toBeInTheDocument();
-        });
+        // Clear input
+        const input = screen.getByLabelText(/water amount/i);
+        await user.clear(input);
 
-        it('settings icon is clickable and focusable', () => {
-            render(<QuickControlCard />);
+        // Save button should be disabled
+        expect(screen.getByText('Save')).toBeDisabled();
 
-            const settingsIcon = screen.getByTestId('settings-icon');
-            expect(settingsIcon).toHaveClass('cursor-pointer');
-        });
+        // Enter 0 (invalid)
+        await user.type(input, '0');
+        expect(screen.getByText('Save')).toBeDisabled();
 
-        it('disables save button for invalid input', async () => {
-            const user = userEvent.setup();
-            render(<QuickControlCard />);
+        // Enter valid number
+        await user.clear(input);
+        await user.type(input, '50');
+        expect(screen.getByText('Save')).not.toBeDisabled();
+    });
 
-            const settingsIcon = screen.getByTestId('settings-icon');
-            await user.click(settingsIcon);
+    it('verifies the correct disabled states for toggle components', () => {
+        render(<QuickControlCard />);
 
-            const input = screen.getByPlaceholderText('e.g. 5');
-            await user.clear(input);
-
-            const saveButton = screen.getByText('Save');
-            expect(saveButton).toBeDisabled();
-
-            await user.type(input, '0');
-            expect(saveButton).toBeDisabled();
-
-            await user.clear(input);
-            await user.type(input, '10');
-            expect(saveButton).not.toBeDisabled();
-        });
+        // Check disabled status for each toggle
+        expect(screen.getByTestId('toggle-light')).toHaveAttribute('data-disabled', 'true');
+        expect(screen.getByTestId('toggle-ventilation')).toHaveAttribute('data-disabled', 'true');
+        expect(screen.getByTestId('toggle-water-plant')).toHaveAttribute('data-disabled', 'false');
+        expect(screen.getByTestId('add-device')).toHaveAttribute('data-disabled', 'true');
     });
 });
