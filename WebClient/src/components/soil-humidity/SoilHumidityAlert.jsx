@@ -41,57 +41,35 @@ export default function SoilHumidityAlert() {
 
     return (
         <div className="mx-auto max-w-sm sm:max-w-md md:max-w-lg w-full">
-            {/* outer card with gradient header */}
-            <div className="bg-gradient-to-br from-green-50 to-blue-50 rounded-3xl shadow-lg overflow-hidden">
-                {/* header */}
-                <div className="flex items-center px-6 py-4 bg-white/50">
+            <div className="bg-gradient-to-br from-green-100 to-blue-100 rounded-2xl shadow-lg p-4 sm:p-6 md:p-8">
+                <div className="font-semibold text-gray-700">Soil Humidity Warning</div>
+                <div className="space-y-6 font-semibold text-gray-700">
                     {warning ? (
-                        <span className="text-red-500 text-xl">⚠️</span>
+                        <p className="text-red-600">⚠️ Warning: Soil humidity out of range!</p>
                     ) : (
-                        <span className="text-green-500 text-xl">✅</span>
+                        <p className="text-green-600">✅ All good—no warning.</p>
                     )}
-                    <h2 className="ml-3 text-lg font-semibold text-gray-800">
-                        Soil Humidity Warning
-                    </h2>
                 </div>
+                <div className="mt-2 max-w-sm mx-auto p-6 bg-white rounded-2xl shadow-lg">
 
-                {/* warning message */}
-                <div className="px-6 py-2">
-                    <p
-                        className={
-                            warning
-                                ? "text-red-600 font-medium"
-                                : "text-green-600 font-medium"
-                        }
-                    >
-                        {warning
-                            ? "Warning: Soil humidity out of range!"
-                            : "All good—no warning."}
-                    </p>
-                </div>
-
-                {/* content pane */}
-                <div className="bg-white rounded-t-none rounded-2xl shadow-inner px-6 py-8 m-4">
-                    <h3 className="text-center text-lg font-semibold text-gray-800 mb-6">
+                    <div className="text-center text-lg font-semibold text-gray-800 mb-4">
                         Current Boundaries
-                    </h3>
+                    </div>
 
-                    <div className="grid grid-cols-2 divide-x divide-gray-200">
-                        {/* lower */}
-                        <div className="text-center px-4">
+                    <div className="flex justify-between gap-6">
+                        <div className="flex-1 text-center">
                             <p className="uppercase text-xs text-gray-500 tracking-wider">
                                 Lower Bound
                             </p>
-                            <p className="mt-1 text-2xl font-bold text-gray-900">
+                            <p className="mt-1 text-2xl font-medium text-gray-900">
                                 {soilHumidityThreshold.lowerbound}
                             </p>
                         </div>
-                        {/* upper */}
-                        <div className="text-center px-4">
+                        <div className="flex-1 text-center">
                             <p className="uppercase text-xs text-gray-500 tracking-wider">
                                 Upper Bound
                             </p>
-                            <p className="mt-1 text-2xl font-bold text-gray-900">
+                            <p className="mt-1 text-2xl font-medium text-gray-900">
                                 {soilHumidityThreshold.upperbound}
                             </p>
                         </div>
@@ -100,5 +78,4 @@ export default function SoilHumidityAlert() {
             </div>
         </div>
     );
-
 }
