@@ -7,6 +7,7 @@ import WaterReadingLatestCard from "../../components/water-reading/WaterReadingL
 import QuickControlCard from "../../components/quick-controls/QuickControlCard.jsx";
 import SoilHumidityInput from "../../components/soil-humidity/SoilHumidityInput.jsx";
 import SoilHumidityAlert from "../../components/soil-humidity/SoilHumidityAlert.jsx";
+import AutomaticWateringCard from "../../components/watering-automatic/AutomaticWateringCard.jsx";
 
 function LandingPage() {
     const [selectedSection, setSelectedSection] = useState("all");
@@ -38,12 +39,13 @@ function LandingPage() {
                         <div className="grid grid-cols-1 md:grid-cols-5 gap-1 w-full items-start">
                             <WateringPredictionCard className="max-w-l md:col-span-2 ml-2 mr-2 " />
                             <SoilHumidityCard className="max-w-3xs md:col-span-1 ml-2 mr-2" />
+                            <SoilHumidityInput/>
+                            <SoilHumidityAlert/>
+                            <AutomaticWateringCard/>
                             <WaterReadingLatestCard className="max-w-3xs md:col-span-1"/>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-5 gap-1 w-full items-start">
                             <QuickControlCard className="md:col-span-3 ml-2"></QuickControlCard>
-                            <SoilHumidityInput/>
-                            <SoilHumidityAlert/>
                         </div>
                     </div>
                 );
