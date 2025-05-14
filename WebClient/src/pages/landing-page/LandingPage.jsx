@@ -3,8 +3,9 @@ import Navbar from "../navbar/Navbar";
 import Graph from "../../components/graph/Graph";
 import WateringPredictionCard from "../../components/watering-prediction/WateringPredictionCard.jsx";
 import SoilHumidityCard from "../../components/soil-humidity/SoilHumidityLatestCard.jsx";
-import WaterReadingLatestCard from "../../components/water-reading/WaterReadingLatestCard.jsx";
 import QuickControlCard from "../../components/quick-controls/QuickControlCard.jsx";
+import { Activity } from "lucide-react";
+import ActivityHistoryCard from "../../components/activity-history/ActivityHistoryCard.jsx";
 import SoilHumidityInput from "../../components/soil-humidity/SoilHumidityInput.jsx";
 import SoilHumidityAlert from "../../components/soil-humidity/SoilHumidityAlert.jsx";
 import AutomaticWateringCard from "../../components/watering-automatic/AutomaticWateringCard.jsx";
@@ -42,10 +43,10 @@ function LandingPage() {
                             <SoilHumidityInput/>
                             <SoilHumidityAlert/>
                             <AutomaticWateringCard/>
-                            <WaterReadingLatestCard className="max-w-3xs md:col-span-1"/>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-5 gap-1 w-full items-start">
                             <QuickControlCard className="md:col-span-3 ml-2"></QuickControlCard>
+                            <ActivityHistoryCard className="col-span-3" />
                         </div>
                     </div>
                 );
