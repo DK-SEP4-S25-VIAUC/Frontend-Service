@@ -10,7 +10,7 @@ export default function ToggleWaterPlant({ isDisabled, waterAmount }) {
 
     const wateringMutation = useWateringRequest({
         onSuccess: (data) => {
-            const ml = data?.data?.ml ?? 'N/A';
+            const ml = data?.watered_amount ?? 'N/A';
 
             toast.update("watering", {
                 render: `Watering successful: ${ml} ml`,

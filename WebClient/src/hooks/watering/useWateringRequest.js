@@ -1,12 +1,11 @@
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
 
-const endpoint = "https://sep4api.azure-api.net/api/IoT/watering";
+const endpoint = "https://sep4api.azure-api.net/api/IoT/water/manual";
 
-const sendWateringRequest = async (ml) => {
+const sendWateringRequest = async (wateredAmount) => {
     const response = await axios.post(endpoint, {
-        cmd: "water",
-        ml: ml
+        watered_amount: wateredAmount
     });
     return response.data;
 };

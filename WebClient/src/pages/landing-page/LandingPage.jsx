@@ -1,7 +1,11 @@
 import { useState } from "react";
-import Dashboard from "../../components/Dashboard/Dashboard";
 
 import Navbar from "../navbar/Navbar";
+import WateringPredictionCard from "../../components/watering-prediction/WateringPredictionCard.jsx";
+import SoilHumidityCard from "../../components/soil-humidity/SoilHumidityLatestCard.jsx";
+import SoilHumidityInput from "../../components/soil-humidity/SoilHumidityInput.jsx";
+import SoilHumidityAlert from "../../components/soil-humidity/SoilHumidityAlert.jsx";
+import QuickControlCard from "../../components/quick-controls/QuickControlCard.jsx";
 
 function LandingPage() {
     const [selectedSection, setSelectedSection] = useState("all");
@@ -10,7 +14,17 @@ function LandingPage() {
             case "all":
                 return (
                     <div className="grid grid-cols-1 gap-1 w-full items-start">
-                        <Dashboard />
+                        <div className="grid grid-cols-1 gap-1 w-full items-start">
+                            <div className="grid grid-cols-1 md:grid-cols-5 gap-1 w-full items-start">
+                                <WateringPredictionCard className="max-w-l md:col-span-2 ml-2 mr-2 " />
+                                <SoilHumidityCard className="max-w-3xs md:col-span-1 ml-2 mr-2" />
+                                <SoilHumidityInput/>
+                                <SoilHumidityAlert/>
+                            </div>
+                            <div className="grid grid-cols-2 md:grid-cols-2 gap-1 w-full items-start">
+                                <QuickControlCard className="md:col-span-2 ml-2"></QuickControlCard>
+                            </div>
+                        </div>
                     </div>
                 );
             case "temperature":
@@ -23,7 +37,6 @@ function LandingPage() {
                 return <h1>Empty Water</h1>;
             default:
                 return <div className="grid grid-cols-1 gap-1 w-full items-start">
-                    <Dashboard />
                 </div>;
         }
     };
