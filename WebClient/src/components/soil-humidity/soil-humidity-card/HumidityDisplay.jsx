@@ -16,8 +16,10 @@ function getHumidityColor(value) {
   }[level]
 }
 
-export default function HumidityDisplay({ value, timestamp }) {
+export default function HumidityDisplay({ value, timestamp, icon }) {
   const color = getHumidityColor(value)
+
+  const Icon = icon;
 
   return (
     <div className="items-center justify-between">
@@ -32,7 +34,7 @@ export default function HumidityDisplay({ value, timestamp }) {
       </div>
       <div className="flex space-x-1">
         {[1, 2, 3, 4, 5].map((level) => (
-          <BeakerIconSolid
+          <Icon
             key={level}
             className={`h-5 w-5 ${
               level * 20 <= value

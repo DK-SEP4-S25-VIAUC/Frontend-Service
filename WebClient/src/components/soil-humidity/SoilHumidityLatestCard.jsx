@@ -4,6 +4,7 @@ import Header from "./soil-humidity-card/Header"
 import Loader from "../Loader"
 import ErrorMessage from "../ErrorMessage"
 import HumidityDisplay from "./soil-humidity-card/HumidityDisplay"
+import { BeakerIcon } from "@heroicons/react/24/outline"
 
 export default function SoilHumidityCard({ className = "" }) {
   const { data, isLoading, isError, error, refetch } = useLatestSoilHumidity({
@@ -19,7 +20,7 @@ export default function SoilHumidityCard({ className = "" }) {
       ) : isError ? (
         <ErrorMessage error={error} />
       ) : (
-        <HumidityDisplay value={data.soil_humidity_value} timestamp={data.time_stamp} />
+        <HumidityDisplay value={data.soil_humidity_value} timestamp={data.time_stamp} icon={BeakerIcon}/>
       )}
     </div>
   )
