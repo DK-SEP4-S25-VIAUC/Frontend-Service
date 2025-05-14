@@ -1,45 +1,34 @@
-import { useState } from "react";
+import { useState } from 'react';
+import usePostManualWatering from "../../hooks/manual-watering/usePostManualWatering";
 
 export default function ManualWateringCard() {
-    const [amount, setAmount] = useState("");
-    const [error, setError] = useState("");
-    const [successMessage, setSuccessMessage] = useState("");
+    const [amount, setAmount] = useState('');
+    const [error, setError] = useState('');
+    const {
+        submitWatering,
+        isLoading,
+        successMessage,
+    } = usePostManualWatering();
 
-    const handleSubmit = async () => {
+    const handleSubmit = () => {
         if (!amount) {
-            setError("Indtast venligst en vandmængde");
+            setError('Indtast venligst en vandmængde');
             return;
         }
 
-        try {
-            const response = await fetch('/api/manual-watering', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ amount }),
-            });
-
-
-            if (!response.ok) {
-                throw new Error("Der opstod en fejl under gemning af informationen");
-            }
-
-
-            setError("");
-            setAmount("");
-            setSuccessMessage("Vanding er gemt!");
-
-            console.log("Watering successful!");
-
-        } catch (err) {
-            setError("Der opstod en fejl under gemning af informationen");
-            console.error("Error:", err);
+        if (isNaN(amount)) {
+            setError('Mængden skal være et gyldigt tal');
+            return;
         }
+
+        setError('');
+        submitWatering(amount).then(() => {
+            setAmount('');
+        });
     };
 
     const handleKeyPress = (e) => {
-        if (!/[0-9]/.test(e.key)) {
+        if (!/[0-9.]$/.test(e.key)) {
             e.preventDefault();
         }
     };
@@ -53,16 +42,17 @@ export default function ManualWateringCard() {
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 onKeyPress={handleKeyPress}
-                inputMode="numeric"
+                inputMode="decimal"
                 className="w-full border border-gray-300 rounded-lg p-2 mb-3 focus:outline-none focus:ring-2 focus:ring-green-500"
             />
-            {error && <p className="text-red-500 text-sm mb-3">{error}</p>} {/* Fejlbesked */}
-            {successMessage && <p className="text-green-500 text-sm mb-3">{successMessage}</p>} {/* Succesbesked */}
+            {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
+            {successMessage && <p className="text-green-500 text-sm mb-3">{successMessage}</p>}
             <button
                 onClick={handleSubmit}
-                className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition"
+                disabled={isLoading}
+                className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition disabled:opacity-50"
             >
-                Water Plant
+                {isLoading ? 'Sender...' : 'Water Plant'}
             </button>
         </div>
     );
