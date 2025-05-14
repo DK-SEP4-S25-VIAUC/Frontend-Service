@@ -3,7 +3,7 @@ import axios from "axios";
 
 export default function usePostAutomaticWatering() {
 
-    const endPoint = "https://sep4api.azure-api.net/api/iot/watering/mode";
+    const endPoint = "https://sep4api.azure-api.net/api/iot/water/mode";
 
     const queryClient = useQueryClient();
 

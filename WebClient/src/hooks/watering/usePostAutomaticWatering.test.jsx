@@ -52,7 +52,7 @@ describe('usePostAutomaticWatering', () => {
         await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
         expect(axios.put).toHaveBeenCalledWith(
-            'https://sep4api.azure-api.net/api/iot/watering/mode',
+            'https://sep4api.azure-api.net/api/iot/water/mode',
             { automatic_watering: true }
         );
         expect(queryClient.invalidateQueries).toHaveBeenCalledWith({ queryKey: ['AutomaticWateringStatus'] });
@@ -73,7 +73,7 @@ describe('usePostAutomaticWatering', () => {
         await waitFor(() => expect(result.current.isError).toBe(true));
 
         expect(axios.put).toHaveBeenCalledWith(
-            'https://sep4api.azure-api.net/api/iot/watering/mode',
+            'https://sep4api.azure-api.net/api/iot/water/mode',
             { automatic_watering: false }
         );
         expect(result.current.error).toBe(mockError);

@@ -147,6 +147,6 @@ describe('AutomaticWateringCard', () => {
         });
 
         render(<AutomaticWateringCard />);
-        expect(screen.getByText(/Error: Submit error/i)).toBeInTheDocument();
+        expect(screen.getByText(/Something went wrong try again!/i)).toBeInTheDocument();
     });
 });
