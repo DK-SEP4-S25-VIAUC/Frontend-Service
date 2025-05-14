@@ -3,7 +3,7 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './calender.css';
 
-function GraphCalendarDisplay({ range, onChange }) {
+export default function GraphCalendarDisplay({ range, onChange }) {
   const [start, end] = range;
   const today = new Date();
 
@@ -29,4 +29,3 @@ function GraphCalendarDisplay({ range, onChange }) {
     </div>
   );
 }
-export { GraphCalendarDisplay };

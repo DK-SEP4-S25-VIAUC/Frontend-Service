@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import GraphCalendarDisplay from './GraphCalenderDisplay';
 
-function CalendarModal({ onClose, range, setRange }) {
+export default function CalendarModal({ onClose, range, setRange }) {
 
   return (
     <div className="fixed inset-0 bg-transparent flex items-center justify-start sm:justify-center z-50 px-2">
@@ -18,4 +18,3 @@ function CalendarModal({ onClose, range, setRange }) {
     </div>
   );
 }
-export { CalendarModal };

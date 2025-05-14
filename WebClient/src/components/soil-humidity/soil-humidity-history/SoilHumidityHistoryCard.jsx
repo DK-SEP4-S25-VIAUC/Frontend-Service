@@ -4,7 +4,7 @@ import LineGraph from "../../graph/SoilLineGraph";
 import Loader from "../../Loader";
 import CalendarModal from "../../calender/CalenderModal"; 
 
-function SoilHumidityHistoryCard({ className = "" }) {
+export default function SoilHumidityHistoryCard({ className = "" }) {
   const [calendarRange, setCalendarRange] = useState([new Date(Date.now() - 24 * 60 * 60 * 1000), new Date()]); //yesterday to now
   const [showCalendar, setShowCalendar] = useState(false);
   const [start, end] = calendarRange;
@@ -75,4 +75,3 @@ function SoilHumidityHistoryCard({ className = "" }) {
     </div>
   );
 }
-export { SoilHumidityHistoryCard };
