@@ -3,7 +3,6 @@ import Navbar from "../navbar/Navbar";
 import Graph from "../../components/graph/Graph";
 import WateringPredictionCard from "../../components/watering-prediction/WateringPredictionCard.jsx";
 import SoilHumidityCard from "../../components/soil-humidity/SoilHumidityLatestCard.jsx";
-import WaterReadingLatestCard from "../../components/water-reading/WaterReadingLatestCard.jsx";
 import QuickControlCard from "../../components/quick-controls/QuickControlCard.jsx";
 import { Activity } from "lucide-react";
 import ActivityHistoryCard from "../../components/activity-history/ActivityHistoryCard.jsx";

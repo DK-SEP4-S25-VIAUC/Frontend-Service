@@ -13,7 +13,7 @@ async function fetchWaterReadings() {
 
     try {
         const response = await fetch(API_BASE_URL);
-        
+
         // Handle development mode mock data
         if (IS_DEV_MODE && response.status === 404) {
             console.debug('Development mode: No data found, returning mock data');
