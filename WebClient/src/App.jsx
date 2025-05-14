@@ -1,12 +1,7 @@
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/landing-page/LandingPage";
-import FetchExample from "./components/FetchExample.jsx";
-import SoilHumidityCard from './components/soil-humidity/SoilHumidityLatestCard.jsx';
-import WateringPredictionCard from './components/watering-prediction/WateringPredictionCard.jsx';
-import QuickControlCard from "./components/quick-controls/QuickControlCard.jsx";
 import {ToastContainer} from "react-toastify";
-import WaterReadingLatestCard from "./components/water-reading/WaterReadingLatestCard.jsx";
 
 
 function App() {
