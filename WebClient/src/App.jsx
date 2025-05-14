@@ -3,7 +3,6 @@ import LandingPage from "./pages/landing-page/LandingPage";
 import FetchExample from "./components/FetchExample.jsx";
 import SoilHumidityCard from './components/soil-humidity/SoilHumidityLatestCard.jsx';
 import WateringPredictionCard from './components/watering-prediction/WateringPredictionCard.jsx';
-import CalendarCard from "./components/calender/CalenderCard.jsx";
 
 function App() {
     return (

@@ -11,6 +11,11 @@
   color: inherit !important;
 }
 
+.react-calendar__tile--hasActive {
+  background-color: rgb(181 253 133) !important;
+  color: inherit !important;
+}
+
 .react-calendar {
   width: 100% !important;
   max-width: 100% !important;

@@ -1,10 +1,10 @@
 const API_BASE_URL = 'https://sep4api.azure-api.net/api/iot/sample';
 
-export async function fetchSoilHumidityHistory(from, to) {
-  const fromIso = from.toISOString(); 
+async function fetchSoilHumidityHistory(from, to) {
+  const fromIso = from.toISOString(); //Converts ISO string to ensure it works in query param, otherwise it adds timezone and location
   const toIso = to.toISOString();
 
-  const url = `${API_BASE_URL}?from=${encodeURIComponent(fromIso)}&to=${encodeURIComponent(toIso)}`;
+  const url = `${API_BASE_URL}?from=${encodeURIComponent(fromIso)}&to=${encodeURIComponent(toIso)}`; //
 
   const requestOptions = {
     method: 'GET',
@@ -13,16 +13,17 @@ export async function fetchSoilHumidityHistory(from, to) {
 
   try {
     const res = await fetch(url, requestOptions);
+    
     console.log(`[API] Request URL: ${url}`);
 
     if (res.ok) {
       const json = await res.json();
       const list = json?.response?.list || [];
-
+      
       return list.map(entry => entry.SampleDTO);
     }
 
-    if (import.meta.env.DEV && res.status === 404) {
+    if (import.meta.env.DEV && res.status === 404) { //Mocks if 404 and dev
       return [{
         timestamp: new Date().toISOString(),
         soil_humidity: 0,
@@ -40,3 +41,5 @@ export async function fetchSoilHumidityHistory(from, to) {
     throw err;
   }
 }
+
+export { fetchSoilHumidityHistory }

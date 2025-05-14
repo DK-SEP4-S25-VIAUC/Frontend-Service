@@ -4,8 +4,8 @@ import LineGraph from "../../graph/SoilLineGraph";
 import Loader from "../../Loader";
 import CalendarModal from "../../calender/CalenderModal"; 
 
-export default function SoilHumidityHistoryCard({ className = "" }) {
-  const [calendarRange, setCalendarRange] = useState([new Date(), new Date()]);
+function SoilHumidityHistoryCard({ className = "" }) {
+  const [calendarRange, setCalendarRange] = useState([new Date(Date.now() - 24 * 60 * 60 * 1000), new Date()]); //yesterday to now
   const [showCalendar, setShowCalendar] = useState(false);
   const [start, end] = calendarRange;
 
@@ -14,10 +14,8 @@ export default function SoilHumidityHistoryCard({ className = "" }) {
   });
 
   const sortedData = Array.isArray(data)
-    ? [...data].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
+    ? [...data].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp)) //Sort by timestamp
     : [];
-
-  const currentReading = sortedData[sortedData.length - 1];
 
   return (
     <div
@@ -77,3 +75,4 @@ export default function SoilHumidityHistoryCard({ className = "" }) {
     </div>
   );
 }
+export { SoilHumidityHistoryCard };
