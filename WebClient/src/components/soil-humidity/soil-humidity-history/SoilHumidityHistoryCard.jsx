@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSoilHumidityHistory } from "../../../hooks/soil-humidity/useHistorySoilHumidity";
 import LineGraph from "../../graph/SoilLineGraph";
 import Loader from "../../Loader";

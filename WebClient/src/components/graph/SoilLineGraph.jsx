@@ -28,7 +28,7 @@ ChartJS.register(
   TimeScale
 );
 
-function SoilLineGraph({ soilData, title = "Soil Humidity History" }) {
+function SoilLineGraph({ soilData }) {
   const [chartData, setChartData] = useState({
     labels: [],
     datasets: [],

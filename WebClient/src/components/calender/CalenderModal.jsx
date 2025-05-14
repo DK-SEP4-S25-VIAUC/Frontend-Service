@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import GraphCalendarDisplay from './GraphCalenderDisplay';
 
 export default function CalendarModal({ onClose, range, setRange }) {

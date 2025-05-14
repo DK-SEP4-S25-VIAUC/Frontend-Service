@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { SoilHumidityHistoryCard } from "./SoilHumidityHistoryCard";
+import SoilHumidityHistoryCard from "./SoilHumidityHistoryCard";
 
 
 vi.mock("../../../hooks/soil-humidity/useHistorySoilHumidity", () => ({
