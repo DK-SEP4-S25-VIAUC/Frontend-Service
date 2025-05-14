@@ -6,6 +6,8 @@ import SoilHumidityCard from "../../components/soil-humidity/SoilHumidityLatestC
 import QuickControlCard from "../../components/quick-controls/QuickControlCard.jsx";
 import { Activity } from "lucide-react";
 import ActivityHistoryCard from "../../components/activity-history/ActivityHistoryCard.jsx";
+import SoilHumidityInput from "../../components/soil-humidity/SoilHumidityInput.jsx";
+import SoilHumidityAlert from "../../components/soil-humidity/SoilHumidityAlert.jsx";
 
 function LandingPage() {
     const [selectedSection, setSelectedSection] = useState("all");
@@ -41,6 +43,8 @@ function LandingPage() {
                         <div className="grid grid-cols-1 md:grid-cols-5 gap-1 w-full items-start">
                             <QuickControlCard className="md:col-span-3 ml-2"></QuickControlCard>
                             <ActivityHistoryCard className="col-span-3" />
+                            <SoilHumidityInput/>
+                            <SoilHumidityAlert/>
                         </div>
                     </div>
                 );
