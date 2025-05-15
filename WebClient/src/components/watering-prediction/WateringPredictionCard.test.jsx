@@ -42,7 +42,7 @@ describe('WateringPredictionCard', () => {
         useWateringPrediction.mockReturnValue({
             isLoading: false,
             isError: false,
-            data: { next_watering_time: testDate.toISOString() },
+            data: { forecastDTO: { next_watering_time: testDate.toISOString() } },
             refetch: vi.fn(),
         });
 
@@ -50,12 +50,12 @@ describe('WateringPredictionCard', () => {
         expect(screen.getByText(/your plants need to be watered at/i)).toBeInTheDocument();
     });
 
-    it('refetches when refresh button is clicked', async () => {
+        it('refetches when refresh button is clicked', async () => {
         const refetchMock = vi.fn();
         useWateringPrediction.mockReturnValue({
             isLoading: false,
             isError: false,
-            data: { next_watering_time: new Date().toISOString() },
+            data: { forecastDTO: { next_watering_time: new Date().toISOString() } }, // <-- FIXED SHAPE
             refetch: refetchMock,
         });
 
@@ -63,5 +63,4 @@ describe('WateringPredictionCard', () => {
         await userEvent.click(screen.getByRole('button', { name: /refresh data/i }));
         expect(refetchMock).toHaveBeenCalledTimes(1);
     });
-}
-);
+});
