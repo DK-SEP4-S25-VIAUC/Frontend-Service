@@ -4,11 +4,13 @@ import Graph from "../../components/graph/Graph";
 import WateringPredictionCard from "../../components/watering-prediction/WateringPredictionCard.jsx";
 import SoilHumidityCard from "../../components/soil-humidity/SoilHumidityLatestCard.jsx";
 import QuickControlCard from "../../components/quick-controls/QuickControlCard.jsx";
+import ManualWateringCard from "../../components/manual-watering/ManualWateringCard.jsx";
 import { Activity } from "lucide-react";
 import ActivityHistoryCard from "../../components/activity-history/ActivityHistoryCard.jsx";
 import SoilHumidityInput from "../../components/soil-humidity/SoilHumidityInput.jsx";
 import SoilHumidityAlert from "../../components/soil-humidity/SoilHumidityAlert.jsx";
 import AirHumidityLatestCard from "../../components/air-humidity/AirHumidityLatestCard.jsx";
+import AutomaticWateringCard from "../../components/watering-automatic/AutomaticWateringCard.jsx";
 
 function LandingPage() {
     const [selectedSection, setSelectedSection] = useState("all");
@@ -41,13 +43,17 @@ function LandingPage() {
                             <WateringPredictionCard className="max-w-l md:col-span-2 ml-2 mr-2 " />
                             <SoilHumidityCard/>
                             <AirHumidityLatestCard/>
+                            <SoilHumidityCard className="max-w-3xs md:col-span-1 ml-2 mr-2" />
+                            <SoilHumidityInput/>
+                            <SoilHumidityAlert/>
+                            <AutomaticWateringCard/>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-5 gap-1 w-full items-start">
                             <QuickControlCard className="md:col-span-3 ml-2"></QuickControlCard>
+                            <ManualWateringCard className="md:col-span-3 ml-2"></ManualWateringCard>
                             <ActivityHistoryCard className="col-span-3" />
                             <SoilHumidityInput/>
                             <SoilHumidityAlert/>
-                            
                         </div>
                     </div>
                 );

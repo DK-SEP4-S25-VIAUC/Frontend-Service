@@ -67,7 +67,7 @@ describe('SoilHumidityInput component', () => {
         fireEvent.click(screen.getByRole('button', { name: /Submit/i }));
 
         await waitFor(() => {
-            expect(screen.getByText(/Error: Invalid data/i)).toBeInTheDocument();
+            expect(screen.getByText(/Something went wrong try again!/i)).toBeInTheDocument();
         });
     });
 });
