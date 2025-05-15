@@ -24,7 +24,7 @@ async function fetchSoilHumidityHistory(from, to) {
 
     if (import.meta.env.DEV && res.status === 404) { //Mocks if 404 and dev
       return [{
-        "SoilHumidityDTO":{
+        SoilHumidityDTO:{
           id: 0,
           time_stamp: new Date().toISOString(),
           soil_humidity_value: "45.2"
