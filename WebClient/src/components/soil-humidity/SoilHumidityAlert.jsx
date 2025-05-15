@@ -40,7 +40,7 @@ export default function SoilHumidityAlert() {
     }
 
     return (
-        <div className="mx-auto max-w-sm sm:max-w-md md:max-w-lg w-full">
+        <div className="mx-auto w-full">
             <div className="bg-white dark:bg-gray-800 shadow-lg dark:shadow-lg rounded-2xl p-4 sm:p-6 md:p-8">
                 <div className="font-semibold text-gray-700 dark:text-gray-300">Soil Humidity Warning</div>
                 <div className="space-y-6 font-semibold text-gray-700 dark:text-gray-300">

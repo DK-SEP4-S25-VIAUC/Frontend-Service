@@ -23,45 +23,33 @@ function LandingPage() {
                     <div className="grid grid-cols-1 gap-4 w-full items-start px-4">
 
                         {/* Top section: cards in a 5-column grid on md+ */}
-                        <div className="grid grid-cols-1 md:grid-cols-5 gap-4 w-full">
-                            <WateringPredictionCard className="md:col-span-2" />
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4 w-full">
+                            <LightDisplayCard />
                             <SoilHumidityCard />
-                            <QuickControlCard />
                             <AirHumidityLatestCard />
                             <TemperatureWidget />
-                        </div>
-
-                        {/* Middle row: second section */}
-                        <div className="grid grid-cols-1 md:grid-cols-5 gap-4 w-full">
-                            <div className="md:col-span-2">
-                                <ManualWateringCard className="max-w-xs mx-auto" />
-                            </div>
-                            <ActivityHistoryCard className="md:col-span-3" />
-                        </div>
-
-                        {/* Bottom row: full-width or split */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-                            <SoilHumidityHistoryCard />
+                            <WateringPredictionCard className="md:col-span-1" />
+                            <SoilHumidityAlert/>
+                            <ManualWateringCard className="max-w-xs mx-auto" />
                             <AutomaticWateringCard />
+
                         </div>
 
-                        {/* Optional extra row for small components */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
-                            <SoilHumidityCard />
-                            <LightDisplayCard />
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4 w-full">
+                            <ActivityHistoryCard className="md:col-span-3" />
                             <SoilHumidityInput />
                         </div>
 
-                        {/* Alerts in a final row */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-                            <SoilHumidityAlert />
-                            {/* Add another card or leave it empty */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4 w-full">
+                            <SoilHumidityHistoryCard className="md:col-span-4" />
+                            <QuickControlCard />
                         </div>
-
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 w-full">
+                        </div>
                     </div>
                 );
             case "temperature":
-                return <div className="grid grid-cols-1 gap-1 w-full items-start">
+                return <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4 w-full">
                     <h1>Empty temperature</h1>
                 </div>;
             case "light":
