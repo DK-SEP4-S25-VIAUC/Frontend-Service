@@ -12,6 +12,7 @@ import SoilHumidityInput from "../../components/soil-humidity/SoilHumidityInput.
 import SoilHumidityAlert from "../../components/soil-humidity/SoilHumidityAlert.jsx";
 import AirHumidityLatestCard from "../../components/air-humidity/AirHumidityLatestCard.jsx";
 import AutomaticWateringCard from "../../components/watering-automatic/AutomaticWateringCard.jsx";
+import LightDisplayCard from "../../components/light/LightDisplayCard.jsx";
 
 function LandingPage() {
     const [selectedSection, setSelectedSection] = useState("all");
@@ -45,6 +46,7 @@ function LandingPage() {
                             <SoilHumidityCard/>
                             <AirHumidityLatestCard/>
                             <SoilHumidityCard className="max-w-3xs md:col-span-1 ml-2 mr-2" />
+                            <LightDisplayCard className="max-w-3xs md:col-span-1 ml-2 mr-2" />
                             <SoilHumidityInput/>
                             <SoilHumidityAlert/>
                             <AutomaticWateringCard/>
