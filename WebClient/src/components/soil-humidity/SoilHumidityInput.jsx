@@ -14,7 +14,7 @@ export default function SoilHumidityInput() {
         submitSoilHumidityData,
         isPending,
         isSuccess,
-        isError,
+        isError
     } = usePostSoilHumidity();
 
     const handleSubmit = (e) => {

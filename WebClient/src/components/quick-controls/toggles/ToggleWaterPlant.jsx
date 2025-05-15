@@ -10,8 +10,10 @@ export default function ToggleWaterPlant({ isDisabled, waterAmount }) {
 
     const wateringMutation = useWateringRequest({
         onSuccess: (data) => {
+            const ml = data?.watered_amount ?? 'N/A';
+
             toast.update("watering", {
-                render: `Watering successful: ${data.data.waterAmount}`,
+                render: `Watering successful: ${ml} ml`,
                 type: "success",
                 isLoading: false,
                 autoClose: 2000,
@@ -47,8 +49,8 @@ export default function ToggleWaterPlant({ isDisabled, waterAmount }) {
             >
                 <Droplets size={20} className="text-gray-600 dark:text-gray-300" />
             </div>
-            <span className="text-xs text-gray-600 dark:text-gray-300">
-                Water Plant {waterAmount ? `(${waterAmount}ml)` : ""}
+            <span className="text-xs text-gray-600 dark:text-gray-300 whitespace-nowrap text-center">
+    Water Plant{waterAmount ? ` (${waterAmount} ml)` : ""}
             </span>
         </div>
     );

@@ -2,8 +2,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/landing-page/LandingPage";
 import {ToastContainer} from "react-toastify";
-
-
 function App() {
     return (
         <Router>
@@ -25,6 +23,7 @@ function App() {
                 </Routes>
                 {/* Hvis du vil inkludere komponenterne som en del af landing page */}
                 <div className="flex justify-center items-center h-full">
+
                 </div>
             </div>
         </Router>
