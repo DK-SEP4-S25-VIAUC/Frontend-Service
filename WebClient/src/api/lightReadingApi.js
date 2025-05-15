@@ -12,11 +12,9 @@ async function fetchLatestLightReading() {
       
       const randomValue = Math.floor(Math.random() * 100);
       return {
-        "LightDTO":{
-            id: 0,
-            light_value: randomValue,
-            time_stamp: new Date().toISOString(),
-        }
+        id: 0,
+        light_value: randomValue,
+        time_stamp: new Date().toISOString(),
       };
     }
 

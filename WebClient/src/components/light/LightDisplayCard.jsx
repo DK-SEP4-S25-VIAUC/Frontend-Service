@@ -10,7 +10,6 @@ export default function LightDisplayCard({ className = "" }) {
     refetchInterval: 10_000,
   })
 
-
   return (
     <div className={`${className} p-6 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 transition-all`}>
       <Header onRefresh={refetch} />
@@ -20,7 +19,7 @@ export default function LightDisplayCard({ className = "" }) {
       ) : isError ? (
         <ErrorMessage error={error} />
       ) : (
-        <LightDisplay value={data.LightDTO.light_value} timestamp={data.LightDTO.time_stamp} />
+        <LightDisplay value={data.light_value} timestamp={data.time_stamp} />
       )}
     </div>
   )
