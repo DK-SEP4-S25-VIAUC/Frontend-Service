@@ -34,8 +34,8 @@ export default function ManualWateringCard() {
     };
 
     return (
-        <div className="bg-white shadow-md rounded-2xl p-4 w-full max-w-sm">
-            <h2 className="text-lg font-semibold mb-3">Manual Watering</h2>
+        <div className="bg-white dark:bg-gray-800 shadow-md rounded-2xl p-4 w-full max-w-sm ">
+            <h2 className="text-lg font-semibold mb-3 dark:text-gray-300">Manual Watering</h2>
             <input
                 type="text"
                 placeholder="Enter amount (ml)"
@@ -43,7 +43,7 @@ export default function ManualWateringCard() {
                 onChange={(e) => setAmount(e.target.value)}
                 onKeyPress={handleKeyPress}
                 inputMode="decimal"
-                className="w-full border border-gray-300 rounded-lg p-2 mb-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-full border border-gray-300 rounded-lg p-2 mb-3 focus:outline-none focus:ring-2 focus:ring-green-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300 dark:focus:ring-green-600"
             />
             {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
             {successMessage && <p className="text-green-500 text-sm mb-3">{successMessage}</p>}
