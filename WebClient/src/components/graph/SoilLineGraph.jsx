@@ -40,15 +40,15 @@ function SoilLineGraph({ soilData }) {
     if (!soilData || soilData.length === 0) return;
 
     const sortedData = [...soilData].sort(
-      (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
+      (a, b) => new Date(a.time_stamp) - new Date(b.time_stamp)
     );
 
     setChartData({
-      labels: sortedData.map((reading) => reading.timestamp),
+      labels: sortedData.map((reading) => reading.time_stamp),
       datasets: [
         {
           label: "Soil Humidity",
-          data: sortedData.map((reading) => reading.soil_humidity),
+          data: sortedData.map((reading) => reading.soil_humidity_value),
           fill: true,
           backgroundColor: "rgba(16, 185, 129, 0.2)",
           borderColor: "rgba(16, 185, 129, 1)",
