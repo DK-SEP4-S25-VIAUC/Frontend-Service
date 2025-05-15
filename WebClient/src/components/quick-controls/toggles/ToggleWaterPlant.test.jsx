@@ -31,8 +31,8 @@ describe('useWateringRequest', () => {
         });
 
         expect(axios.post).toHaveBeenCalledWith(
-            'https://sep4api.azure-api.net/api/IoT/watering',
-            { cmd: 'water', ml: 500 }
+            'https://sep4api.azure-api.net/api/IoT/water/manual',
+            {watered_amount: 500 }
         );
     });
 
