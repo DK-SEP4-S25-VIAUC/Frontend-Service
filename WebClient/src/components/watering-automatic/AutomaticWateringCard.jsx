@@ -49,8 +49,8 @@ export default function AutomaticWateringCard() {
         );
 
     return (
-        <div className="w-full">
-            <div className="w-full bg-white dark:bg-gray-800 shadow-md dark:shadow-lg rounded-lg p-6 sm:p-8 flex flex-col overflow-hidden">
+        <div className="h-full w-full">
+            <div className="h-full w-full bg-white dark:bg-gray-800 shadow-md dark:shadow-lg rounded-lg p-6 sm:p-8 flex flex-col overflow-hidden">
                 <h2 className="text-lg sm:text-xl font-semibold mb-6 text-center text-gray-900 dark:text-white break-words">
                     Watering Mode
                 </h2>
