@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Navbar from "../navbar/Navbar";
 import Graph from "../../components/graph/Graph";
+import SoilHumidityHistoryCard from "../../components/soil-humidity/soil-humidity-history/SoilHumidityHistoryCard";
 import WateringPredictionCard from "../../components/watering-prediction/WateringPredictionCard.jsx";
 import SoilHumidityCard from "../../components/soil-humidity/SoilHumidityLatestCard.jsx";
 import QuickControlCard from "../../components/quick-controls/QuickControlCard.jsx";
@@ -54,6 +55,9 @@ function LandingPage() {
                             <ActivityHistoryCard className="col-span-3" />
                             <SoilHumidityInput/>
                             <SoilHumidityAlert/>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+                            <SoilHumidityHistoryCard />
                         </div>
                     </div>
                 );

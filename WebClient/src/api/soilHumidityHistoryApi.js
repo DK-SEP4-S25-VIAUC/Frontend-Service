@@ -1,16 +1,37 @@
-const API_BASE_URL = 'https://sep4api.azure-api.net/api/IoT/soilhumidity';
+const API_BASE_URL = 'https://sep4api.azure-api.net/api/iot/sample';
 
-export async function fetchSoilHumidityHistory() {
+async function fetchSoilHumidityHistory(from, to) {
+  const fromIso = from.toISOString(); //Converts ISO string to ensure it works in query param, otherwise it adds timezone and location
+  const toIso = to.toISOString();
+
+  const url = `${API_BASE_URL}?from=${encodeURIComponent(fromIso)}&to=${encodeURIComponent(toIso)}`; //
+
+  const requestOptions = {
+    method: 'GET',
+    redirect: 'follow',
+  };
+
   try {
-    const res = await fetch(API_BASE_URL);
-    console.log(API_BASE_URL);
+    const res = await fetch(url, requestOptions);
+    
+    console.log(`[API] Request URL: ${url}`);
+
     if (res.ok) {
-      return await res.json();
+      const json = await res.json();
+      const list = json?.response?.list || [];
+      
+      return list.map(entry => entry.SampleDTO);
     }
-    if (import.meta.env.DEV && res.status === 404) {
+
+    if (import.meta.env.DEV && res.status === 404) { //Mocks if 404 and dev
       return [{
-        time_stamp: new Date().toISOString(),
-        soil_humidity_value: 0,
+        timestamp: new Date().toISOString(),
+        soil_humidity: 0,
+        id: 0,
+        air_humidity: null,
+        air_temperature: null,
+        light_value: null,
+        lower_threshold: null,
       }];
     }
 
@@ -20,3 +41,5 @@ export async function fetchSoilHumidityHistory() {
     throw err;
   }
 }
+
+export { fetchSoilHumidityHistory }
