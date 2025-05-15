@@ -12,7 +12,7 @@ export default function AirHumidityLatestCard({ className = "" }) {
     });
 
     return (
-        <div className={`${className} p-6 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 transition-all`}>
+        <div className={`${className} p-6 bg-white dark:bg-gray-800 shadow-md dark:shadow-md border border-gray-100 dark:border-gray-700 rounded-xl transition-all`}>
             <Header onRefresh={refetch} />
 
             {isLoading ? (
