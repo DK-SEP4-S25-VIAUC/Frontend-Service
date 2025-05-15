@@ -31,7 +31,7 @@ export default function SoilHumidityInput() {
 
     return (
         <div
-            className="soil-humidity-wrapper bg-white dark:bg-gray-800 rounded-2xl shadow-lg dark:shadow-lg p-4 sm:p-6 md:p-8 w-full mx-auto"
+            className="soil-humidity-wrapper bg-white dark:bg-gray-800 shadow-md dark:shadow-md border border-gray-100 dark:border-gray-700 rounded-xl p-4 sm:p-6 md:p-8 w-full mx-auto"
         >
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="text-center">

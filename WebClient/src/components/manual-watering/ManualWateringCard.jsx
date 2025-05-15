@@ -34,7 +34,7 @@ export default function ManualWateringCard() {
     };
 
     return (
-        <div className="bg-white dark:bg-gray-800 shadow-md rounded-2xl p-4 mx-auto w-full ">
+        <div className="bg-white dark:bg-gray-800 shadow-md dark:shadow-md border border-gray-100 dark:border-gray-700 rounded-xl p-4 mx-auto w-full ">
             <h2 className="text-lg font-semibold mb-3 dark:text-gray-300">Manual Watering</h2>
             <input
                 type="text"
