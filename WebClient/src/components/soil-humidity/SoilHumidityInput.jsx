@@ -32,22 +32,23 @@ export default function SoilHumidityInput() {
 
     return (
         <div
-            className="soil-humidity-wrapper bg-gradient-to-br from-green-100 to-blue-100 rounded-2xl shadow-lg p-4 sm:p-6 md:p-8 w-full h-full">
+            className="soil-humidity-wrapper bg-white dark:bg-gray-800 rounded-2xl shadow-lg dark:shadow-lg p-4 sm:p-6 md:p-8 max-w-sm sm:max-w-md md:max-w-lg w-full mx-auto"
+        >
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="text-center">
-                    <label className="block mb-2 font-semibold text-gray-700 text-xl">
+                    <label className="block mb-2 font-semibold text-gray-700 dark:text-gray-300 text-xl">
                         Set soil humidity
                     </label>
                 </div>
-                <div className="border-gray-300 rounded-lg p-4 space-y-6 text-center">
+                <div className="border-gray-300 dark:border-gray-600 rounded-lg p-4 space-y-6 text-center">
                     <div>
-                        <label className="block mb-1">Lower soil humidity</label>
+                        <label className="block mb-1 text-gray-700 dark:text-gray-300">Lower soil humidity</label>
                         <input
                             type="number"
                             min="0"
                             max="100"
                             step="1"
-                            className="input input-md w-full text-center placeholder-gray-400 border border-gray-300 rounded-md"
+                            className="input input-md w-full text-center placeholder-gray-400 dark:placeholder-gray-500 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 rounded-md"
                             placeholder="Enter lower soil humidity"
                             value={lowerSoilHumidity}
                             onChange={(e) =>
@@ -57,13 +58,13 @@ export default function SoilHumidityInput() {
                         />
                     </div>
                     <div>
-                        <label className="block mb-1">Upper soil humidity</label>
+                        <label className="block mb-1 text-gray-700 dark:text-gray-300">Upper soil humidity</label>
                         <input
                             type="number"
                             min="0"
                             max="100"
                             step="1"
-                            className="input input-md w-full text-center placeholder-gray-400 border border-gray-300 rounded-md"
+                            className="input input-md w-full text-center placeholder-gray-400 dark:placeholder-gray-500 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 rounded-md"
                             placeholder="Enter upper soil humidity"
                             value={upperSoilHumidity}
                             onChange={(e) =>
@@ -76,18 +77,18 @@ export default function SoilHumidityInput() {
 
                 <button
                     type="submit"
-                    className={`cursor-pointer w-full py-3 px-6 font-semibold text-white bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl shadow-lg hover:from-indigo-600 hover:to-blue-500 focus:outline-none focus:ring-4 focus:ring-indigo-300 transition duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed`}
+                    className={`cursor-pointer w-full py-3 px-6 font-semibold text-white bg-gray-500 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-700 rounded-xl shadow-lg focus:outline-none focus:ring-4 focus:ring-indigo-300 dark:focus:ring-indigo-700 transition duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed`}
                     disabled={isPending}
                 >
                     {isPending ? "Submitting..." : "Submit"}
                 </button>
 
                 {isSuccess && (
-                    <p className="text-green-500 text-center">Success!</p>
+                    <p className="text-green-500 dark:text-green-400 text-center">Success!</p>
                 )}
                 {isError && (
-                    <p className="text-red-500 text-center">
-                        Error: {error?.response?.data?.message || error.message}
+                    <p className="text-red-500 dark:text-red-400 text-center">
+                        Something went wrong try again!
                     </p>
                 )}
             </form>
