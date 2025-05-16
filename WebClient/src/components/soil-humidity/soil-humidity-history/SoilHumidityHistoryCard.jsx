@@ -12,11 +12,7 @@ export default function SoilHumidityHistoryCard({ className = "" }) {
   const { data, isLoading, isError, error, refetch } = useSoilHumidityHistory(start, end, {
     refetchInterval: 1000 * 60 * 1,
   });
-
-  const sortedData = Array.isArray(data)
-    ? [...data].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp)) //Sort by timestamp
-    : [];
-
+  
   return (
     <div
       className={`${className} p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 transition-all`}
@@ -65,7 +61,7 @@ export default function SoilHumidityHistoryCard({ className = "" }) {
         <div className="mt-2">
             <div className="h-80">
               <LineGraph
-                soilData={sortedData}
+                soilData={data}
                 title="Soil Humidity History"
                 className="w-full h-full"
               />

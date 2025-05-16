@@ -19,7 +19,7 @@ export default function LightDisplayCard({ className = "" }) {
       ) : isError ? (
         <ErrorMessage error={error} />
       ) : (
-        <LightDisplay value={data.light_value} timestamp={data.time_stamp} />
+        <LightDisplay value={data.LightDTO.light_value} timestamp={data.LightDTO.time_stamp} />
       )}
     </div>
   )
