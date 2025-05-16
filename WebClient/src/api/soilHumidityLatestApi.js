@@ -25,7 +25,7 @@ async function fetchLatestSoilHumidity() {
 
     const data = await response.json();
     console.debug('Fetched soil humidity data:', data);
-    return data;
+    return data.SoilHumidityDTO;
   } catch (error) {
     const errorMessage = error instanceof Error
       ? `Failed to fetch soil humidity data: ${error.message}`
