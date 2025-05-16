@@ -28,10 +28,10 @@ function LineGraph({ waterData, title, className = "" }) {
     if (!waterData || waterData.length === 0) return
 
     // Sort and format data
-    const sortedData = [...waterData].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
+    const sortedData = [...waterData].sort((a, b) => new Date(a.time_stamp) - new Date(b.time_stamp))
 
     setChartData({
-      labels: sortedData.map((reading) => reading.timestamp),
+      labels: sortedData.map((reading) => reading.time_stamp),
       datasets: [
         {
           label: title || "Water Usage",
