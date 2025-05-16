@@ -20,8 +20,10 @@ export default function SoilHumidityInput() {
     const handleSubmit = (e) => {
         e.preventDefault();
         submitSoilHumidityData({
-            lowerbound: lowerSoilHumidity,
-            upperbound: upperSoilHumidity,
+            CreateManualThresholdDTO: {
+                lowerbound: lowerSoilHumidity,
+                upperbound: upperSoilHumidity,
+            }
         });
         if (isSuccess) {
             setLowerSoilHumidity(0);

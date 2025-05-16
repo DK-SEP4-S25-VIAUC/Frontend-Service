@@ -6,7 +6,7 @@ export default function useGetThreshold() {
 
     const getSoilHumidityThreshold = async () => {
         const response = await axios.get(endPoint);
-        return response.data;
+        return response.data.ThresholdSoilHumidity;
     }
 
     const {data: soilHumidityThreshold, error, isLoading} = useQuery({
