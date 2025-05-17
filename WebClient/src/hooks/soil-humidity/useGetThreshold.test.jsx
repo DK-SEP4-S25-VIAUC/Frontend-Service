@@ -21,7 +21,7 @@ describe('useGetThreshold hook', () => {
 
     it('fetches and returns soil humidity threshold data on success', async () => {
         const mockData = { threshold: 50 };
-        axios.get.mockResolvedValue({ data: mockData });
+        axios.get.mockResolvedValue({ data: { ThresholdSoilHumidity: mockData } });
 
         const { result } = renderHook(() => useGetThreshold(), {
             wrapper: createWrapper(),
