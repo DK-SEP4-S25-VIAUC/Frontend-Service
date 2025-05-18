@@ -11,7 +11,6 @@ export default function ThemeToggle() {
 
     useEffect(() => {
         const root = window.document.documentElement;
-
         const applyTheme = (t) => {
             if (t === 'dark') {
                 root.classList.add('dark');
@@ -25,7 +24,6 @@ export default function ThemeToggle() {
         };
 
         applyTheme(theme);
-
         if (theme === 'system') {
             const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
             const handleChange = () => {
@@ -42,17 +40,16 @@ export default function ThemeToggle() {
     };
 
     return (
-        <div className="relative inline-block text-left">
-            <button
-                onClick={() =>
-                    handleChangeTheme(theme === 'light' ? 'dark' : theme === 'dark' ? 'system' : 'light')
-                }
-                className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none"
-            >
-                {theme === 'light' && <SunIcon className="w-6 h-6 text-yellow-500" />}
-                {theme === 'dark' && <MoonIcon className="w-6 h-6 text-gray-200" />}
-                {theme === 'system' && <ComputerDesktopIcon className="w-6 h-6 text-blue-500" />}
-            </button>
-        </div>
+        <button
+            onClick={() =>
+                handleChangeTheme(theme === 'light' ? 'dark' : theme === 'dark' ? 'system' : 'light')
+            }
+            className="flex items-center justify-center rounded-md p-2 transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
+            aria-label="Toggle theme"
+        >
+            {theme === 'light' && <SunIcon className="w-5 h-5 text-yellow-500" />}
+            {theme === 'dark' && <MoonIcon className="w-5 h-5 text-blue-400" />}
+            {theme === 'system' && <ComputerDesktopIcon className="w-5 h-5 text-gray-500 dark:text-gray-400" />}
+        </button>
     );
 }
