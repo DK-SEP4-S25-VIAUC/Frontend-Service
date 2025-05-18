@@ -1,7 +1,7 @@
-// src/components/Navbar.jsx
 import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import ThemeToggle from "../../components/ThemeProvider.jsx";
 
 export default function Navbar() {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -28,6 +28,9 @@ export default function Navbar() {
                             {label}
                         </Link>
                     ))}
+                    <div className="ml-6 border-l border-gray-200 dark:border-gray-700 pl-6">
+                        <ThemeToggle />
+                    </div>
                 </div>
 
                 <div className="lg:hidden">
@@ -48,13 +51,16 @@ export default function Navbar() {
                               className="text-2xl font-bold text-black dark:text-white">
                             Smart Greenhouse
                         </Link>
-                        <button
-                            onClick={() => setMenuOpen(false)}
-                            className="text-2xl text-gray-800 dark:text-white focus:outline-none"
-                            aria-label="Close menu"
-                        >
-                            <FiX />
-                        </button>
+                        <div className="flex items-center">
+                            <ThemeToggle />
+                            <button
+                                onClick={() => setMenuOpen(false)}
+                                className="ml-4 text-2xl text-gray-800 dark:text-white focus:outline-none"
+                                aria-label="Close menu"
+                            >
+                                <FiX />
+                            </button>
+                        </div>
                     </div>
                     <div className="flex flex-col space-y-4 dark:text-white">
                         {links.map(({ to, label }) => (
