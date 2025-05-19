@@ -34,7 +34,7 @@ export default function QuickControlCard() {
     };
 
     return (
-        <div className="md:col-span-2 bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 w-full max-w-md">
+        <div className="md:col-span-2 bg-white dark:bg-gray-800 shadow-md dark:shadow-md border border-gray-100 dark:border-gray-700 rounded-xl p-4 w-full max-w-md">
             <div className="flex items-center relative mb-3">
                 <Settings
                     size={15}

@@ -1,4 +1,3 @@
-// TemperatureWidget.test.jsx
 import { render, screen, fireEvent } from '@testing-library/react';
 import TemperatureWidget from './TemperatureWidget.jsx';
 import { useGetTemperatureLatest } from '../../hooks/temperature/useGetTemperatureLatest.jsx';
@@ -41,8 +40,11 @@ describe('TemperatureWidget', () => {
             isLoading: false,
             error: null,
             temperatureLatest: {
-                temperature_value: 22.5,
-                time_stamp: '2025-05-14T10:30:00Z',
+                TemperatureDTO: {
+                    id: 905,
+                    temperature_value: 22.5,
+                    time_stamp: '2025-05-14T10:30:00Z',
+                }
             },
         });
 
@@ -72,15 +74,17 @@ describe('TemperatureWidget', () => {
             isLoading: false,
             error: null,
             temperatureLatest: {
-                temperature_value: 23.7,
-                time_stamp: '2025-05-14T10:00:00Z',
+                TemperatureDTO: {
+                    id: 905,
+                    temperature_value: 23.7,
+                    time_stamp: '2025-05-14T10:00:00Z',
+                }
             },
         });
 
         render(<TemperatureWidget />);
         const refreshButton = screen.getByRole('button'); // Assumes your WidgetHeader uses a <button>
         fireEvent.click(refreshButton);
-
         expect(invalidateQueriesMock).toHaveBeenCalledWith({ queryKey: ['temperatureLatest'] });
     });
 });

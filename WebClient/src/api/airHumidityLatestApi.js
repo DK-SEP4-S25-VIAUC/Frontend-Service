@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://sep4api.azure-api.net/api/IoT/airhumidity/latest';
+const API_BASE_URL = 'https://sep4api.azure-api.net/api/iot/airhumidity/latest';
 const IS_DEV_MODE = import.meta.env.MODE === 'development';
 
 async function fetchLatestAirHumidity() {
@@ -24,7 +24,7 @@ async function fetchLatestAirHumidity() {
         
         const data = await response.json();
         console.debug('Fetched air humidity data:', data);
-        return data;
+        return data.AirHumidityDTO;
     }catch (error) {
         const errorMessage = error instanceof Error
             ? `Failed to fetch air humidity data: ${error.message}`

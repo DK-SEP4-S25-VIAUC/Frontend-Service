@@ -11,9 +11,11 @@ export default function ActivityHistoryCard({ className = "" }) {
 
   const [activeTab, setActiveTab] = useState("chart")
 
+  console.log("ActivityHistoryCard data", data);
+
   return (
     <div
-      className={`${className} p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 transition-all`}
+      className={`${className} p-6 bg-white dark:bg-gray-800 shadow-md dark:shadow-md border border-gray-100 dark:border-gray-700 rounded-xl transition-all`}
     >
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-bold text-gray-900 dark:text-white relative">
@@ -64,14 +66,14 @@ export default function ActivityHistoryCard({ className = "" }) {
         <div className="mt-2">
           {activeTab === "chart" ? (
             <div className="h-80">
-              <LineGraph waterData={data.readings} title="Watered Amount History" className="w-full h-full" />
+              <LineGraph waterData={data} title="Watered Amount History" className="w-full h-full" />
             </div>
           ) : (
             <div className="flex justify-center py-4">
               <WaterReadingLatest
                 className="max-w-md w-full"
                 waterReadings={{
-                  data: data.currentLevel,
+                  data: data[data.length - 1]?.water_level,
                   isLoading,
                   isError,
                   error,

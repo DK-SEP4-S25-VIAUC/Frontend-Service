@@ -8,7 +8,7 @@ vi.mock('axios');
 
 describe('SoilHumidityInput component', () => {
     let queryClient;
-    const wrapper = ({ children }) => (
+    const wrapper = ({children}) => (
         <QueryClientProvider client={queryClient}>
             {children}
         </QueryClientProvider>
@@ -21,27 +21,27 @@ describe('SoilHumidityInput component', () => {
 
     it('renders input fields and submit button', () => {
         render(
-            <SoilHumidityInput />,
-            { wrapper }
+            <SoilHumidityInput/>,
+            {wrapper}
         );
 
         expect(screen.getByPlaceholderText(/Enter lower soil humidity/i)).toBeInTheDocument();
         expect(screen.getByPlaceholderText(/Enter upper soil humidity/i)).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /Submit/i })).toBeInTheDocument();
+        expect(screen.getByRole('button', {name: /Submit/i})).toBeInTheDocument();
     });
 
     it('submits data and shows success message on successful POST', async () => {
-        axios.post.mockResolvedValue({ data: { success: true } });
+        axios.post.mockResolvedValue({data: {success: true}});
 
         render(
-            <SoilHumidityInput />,
-            { wrapper }
+            <SoilHumidityInput/>,
+            {wrapper}
         );
 
-        fireEvent.change(screen.getByPlaceholderText(/Enter lower soil humidity/i), { target: { value: '10' } });
-        fireEvent.change(screen.getByPlaceholderText(/Enter upper soil humidity/i), { target: { value: '90' } });
+        fireEvent.change(screen.getByPlaceholderText(/Enter lower soil humidity/i), {target: {value: '10'}});
+        fireEvent.change(screen.getByPlaceholderText(/Enter upper soil humidity/i), {target: {value: '90'}});
 
-        fireEvent.click(screen.getByRole('button', { name: /Submit/i }));
+        fireEvent.click(screen.getByRole('button', {name: /Submit/i}));
 
         await waitFor(() => {
             expect(screen.getByText(/Success!/i)).toBeInTheDocument();
@@ -49,22 +49,22 @@ describe('SoilHumidityInput component', () => {
 
         expect(axios.post).toHaveBeenCalledWith(
             'https://sep4api.azure-api.net/api/iot/soilhumidity/threshold',
-            { upperbound: 90, lowerbound: 10 }
+            {CreateManualThresholdDTO: {upperbound: 90, lowerbound: 10}}
         );
     });
 
     it('shows error message on failed POST', async () => {
-        axios.post.mockRejectedValue({ response: { data: { message: 'Invalid data' } } });
+        axios.post.mockRejectedValue({response: {data: {message: 'Invalid data'}}});
 
         render(
-            <SoilHumidityInput />,
-            { wrapper }
+            <SoilHumidityInput/>,
+            {wrapper}
         );
 
-        fireEvent.change(screen.getByPlaceholderText(/Enter lower soil humidity/i), { target: { value: '5' } });
-        fireEvent.change(screen.getByPlaceholderText(/Enter upper soil humidity/i), { target: { value: '95' } });
+        fireEvent.change(screen.getByPlaceholderText(/Enter lower soil humidity/i), {target: {value: '5'}});
+        fireEvent.change(screen.getByPlaceholderText(/Enter upper soil humidity/i), {target: {value: '95'}});
 
-        fireEvent.click(screen.getByRole('button', { name: /Submit/i }));
+        fireEvent.click(screen.getByRole('button', {name: /Submit/i}));
 
         await waitFor(() => {
             expect(screen.getByText(/Something went wrong try again!/i)).toBeInTheDocument();

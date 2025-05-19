@@ -8,16 +8,13 @@ import { useMinimumAnimation } from "../../hooks/Animation/useMinimumAnimation.j
 import dayjs from 'dayjs';
 
 function TemperatureWidget() {
-    // Initialize queryClient
+
     const queryClient = useQueryClient();
 
-    // Use your React Query hook
     const { temperatureLatest, error, isLoading } = useGetTemperatureLatest();
 
-    // Animation for refresh button
     const [isRefreshing, startRefreshing] = useMinimumAnimation(isLoading);
 
-    // Handle the manual refresh
     const handleRefresh = () => {
         startRefreshing();
         queryClient.invalidateQueries({ queryKey: ['temperatureLatest'] });
@@ -41,11 +38,11 @@ function TemperatureWidget() {
             >
                 <div className="flex flex-col items-center">
                     <span className="text-4xl font-bold text-gray-800 dark:text-white">
-                        {temperatureLatest?.temperature_value}°C
+                        {temperatureLatest?.TemperatureDTO?.temperature_value}°C
                     </span>
                     <span className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-                        Last updated: {temperatureLatest?.time_stamp ?
-                        dayjs(temperatureLatest.time_stamp).format('HH:mm:ss') : ''}
+                        Last updated: {temperatureLatest?.TemperatureDTO?.time_stamp ?
+                        dayjs().format('HH:mm:ss') : ''}
                     </span>
                 </div>
             </WidgetContent>

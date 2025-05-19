@@ -9,7 +9,7 @@ const TO_DATE = new Date('2025-05-12T15:52:00.000Z');
 const FROM_ENCODED = encodeURIComponent(FROM_DATE.toISOString());
 const TO_ENCODED = encodeURIComponent(TO_DATE.toISOString());
 
-const API_URL = `https://sep4api.azure-api.net/api/iot/sample?from=${FROM_ENCODED}&to=${TO_ENCODED}`;
+const API_URL = `https://sep4api.azure-api.net/api/iot/soilhumidity?from=${FROM_ENCODED}&to=${TO_ENCODED}`;
 
 beforeEach(() => {
   vi.resetModules();
@@ -23,14 +23,12 @@ afterAll(() => {
 });
 
 describe('fetchSoilHumidityHistory(from, to)', () => {
-  it('returns SampleDTOs on 200 (Success)', async () => {
+  it('returns SoilHumidityDTOs on 200 (Success)', async () => {
     const mockApiResponse = {
-      response: {
-        list: [
-          { SampleDTO: { id: 1, soil_humidity: 45, timestamp: '2025-01-01T00:00:00Z' } },
-          { SampleDTO: { id: 2, soil_humidity: 42, timestamp: '2025-01-01T01:00:00Z' } },
-        ],
-      },
+      list: [
+        { SoilHumidityDTO: { id: 1, soil_humidity_value: 45, time_stamp: '2025-01-01T00:00:00Z' } },
+        { SoilHumidityDTO: { id: 2, soil_humidity_value: 42, time_stamp: '2025-01-01T01:00:00Z' } },
+      ],
     };
 
     fetch.mockResolvedValueOnce({
@@ -41,8 +39,8 @@ describe('fetchSoilHumidityHistory(from, to)', () => {
     const data = await fetchSoilHumidityHistory(FROM_DATE, TO_DATE);
 
     expect(data).toEqual([
-      { id: 1, soil_humidity: 45, timestamp: '2025-01-01T00:00:00Z' },
-      { id: 2, soil_humidity: 42, timestamp: '2025-01-01T01:00:00Z' },
+      { id: 1, soil_humidity_value: 45, time_stamp: '2025-01-01T00:00:00Z' },
+      { id: 2, soil_humidity_value: 42, time_stamp: '2025-01-01T01:00:00Z' },
     ]);
 
     expect(fetch).toHaveBeenCalledWith(API_URL, { method: 'GET', redirect: 'follow' });
@@ -62,7 +60,7 @@ describe('fetchSoilHumidityHistory(from, to)', () => {
 
     const data = await fetchSoilHumidityHistory(FROM_DATE, TO_DATE);
     expect(data).toHaveLength(1);
-    expect(data[0]).toHaveProperty('timestamp');
-    expect(data[0]).toHaveProperty('soil_humidity');
+    expect(data[0].SoilHumidityDTO).toHaveProperty('time_stamp');
+    expect(data[0].SoilHumidityDTO).toHaveProperty('soil_humidity_value');
   });
 });
